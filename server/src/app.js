@@ -1,25 +1,13 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const morgan = require('morgan')
+const express = require("express");
+const config = require("config");
+const cors = require("cors");
 
-const PORT = process.env.PORT ?? 3000
+const PORT = config.get("port") || 4001;
 
+const app = express();
 
-const app = express()
-
-
-
-app.use(express)
-app.use(cors())
-
-
-app.get('/', (req, res) => {
-    res.send({
-        message: 'hello world'
-    })
-})
+app.use("/api/auth", require("./routes/auth.routes"));
 
 app.listen(PORT, () => {
-    console.log(`Server has been started on port ${PORT}... `)
-})
+  console.log(`Server has been started on port ${PORT}... `);
+});
