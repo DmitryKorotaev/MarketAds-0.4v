@@ -3,7 +3,12 @@ const User = require("../models/User");
 const { check, validationResult } = require("express-validation");
 const router = Router();
 
-function checkObject(obj) {
+const CREATED = 201;
+const BAD_REQUEST = 400;
+const UNPROCESSABLE_ENTITY = 422;
+const INTERNAL_SERVER_ERROR = 500;
+
+function checkObj(obj) {
   if (Object.keys(obj).length === 0) {
     console.log("объект пуст");
     return false;
@@ -15,7 +20,9 @@ function checkObject(obj) {
 router.post(
   "/register",
   [
-    check("phone").isMobilePhone().withMessage("Некорректный номер телефона"),
+    check("numberPhone")
+      .isMobilePhone()
+      .withMessage("Некорректный номер телефона"),
 
     check("name")
       .isLength({ min: 3 })
@@ -41,18 +48,42 @@ router.post(
         })*/
   ],
 
-  async (req, res, next) => {
-    const result = validationResult(req).formatWith(({ msg }) => msg);
-    const hasError = !result.isEmpty();
-
-    if (hasError) {
-      res.status(422).json({ error: result.array() });
-    } else {
-      next();
-    }
+  async (req, res) => {
     try {
+      if (!req.body) {
+        res.status(BAD_REQUEST).json({ message: "invalid body.." });
+      }
+
+      const errors = validationResult(req).formatWith(({ msg }) => msg);
+      if (!errors.isEmpty()) {
+        return res.status(UNPROCESSABLE_ENTITY).json({
+          error: errors.array(),
+          message: "incorrect data during registration  :(",
+        });
+      }
+
+      const options = {
+        numberPhone: req.body.numberPhone,
+        name: req.body.name,
+        email: req.body.email,
+        pasword: req.body.password,
+      };
+
+      const user = new User(options);
+      const newUser = await user.save();
+
+      if (!checkObj(newUser)) {
+        res.status(CREATE).json({ message: "New user has been created!!!" });
+      } else checkObj(newUser);
+      {
+        res
+          .status(UNPROCESSABLE_ENTITY)
+          .json({ message: "incorrect data during registration  :(" });
+      }
     } catch (e) {
-      res.status(500).json({ message: "Что-то пошло не так" });
+      res
+        .status(INTERNAL_SERVER_ERROR)
+        .json({ message: "Что-то пошло не так" });
     }
   }
 );

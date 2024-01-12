@@ -1,5 +1,6 @@
 const db = require("../modulesMysql/connection");
 const bcrypt = require("bcrypt");
+const salt = 10;
 
 class User {
   constructor(options) {
@@ -24,7 +25,7 @@ class User {
       if (candidate) {
         return new Object();
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(password, salt);
       await db.query(
         `INSERT INTO users SET numberPhone= '${this.numberPhone}', 
         name = "${this.name}", 

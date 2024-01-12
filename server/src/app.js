@@ -3,6 +3,7 @@ const config = require("config");
 const cors = require("cors");
 
 const PORT = config.get("port") || 4001;
+app.use(express.json())
 
 const app = express();
 
