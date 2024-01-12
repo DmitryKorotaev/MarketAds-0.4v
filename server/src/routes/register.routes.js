@@ -10,13 +10,13 @@ const INTERNAL_SERVER_ERROR = 500;
 
 function checkObj(obj) {
   if (Object.keys(obj).length === 0) {
-    console.log("объект пуст");
+    console.log("Введите корректные данные!");
     return false;
   } else {
     return true;
   }
 }
-
+// api/auth/register
 router.post(
   "/register",
   [
@@ -38,14 +38,13 @@ router.post(
       .isLength({ min: 8, max: 15 })
       .withMessage("your password must contain at least 8 characters"),
 
-    /* check("confirmPassword")
-        .custom((value, {req}) => {
-          if(value != req.body.password) {
-            console.log(req.body.password, req.body.confirmPassword)
-            throw new Error ("confirm password does not match")
-          }
-          return true
-        })*/
+    check("confirmPassword").custom((value, { req }) => {
+      if (value != req.body.password) {
+        console.log(req.body.password, req.body.confirmPassword);
+        throw new Error("confirm password does not match");
+      }
+      return true;
+    }),
   ],
 
   async (req, res) => {
@@ -69,12 +68,12 @@ router.post(
         pasword: req.body.password,
       };
 
-      const user = new User(options);
-      const newUser = await user.save();
+      const userRer = new User(options);
+      const newUserReg = await user.save();
 
-      if (!checkObj(newUser)) {
-        res.status(CREATE).json({ message: "New user has been created!!!" });
-      } else checkObj(newUser);
+      if (!checkObj(newUserReg)) {
+        res.status(CREATED).json({ message: "New user has been created!!!" });
+      } else checkObj(newUserReg);
       {
         res
           .status(UNPROCESSABLE_ENTITY)

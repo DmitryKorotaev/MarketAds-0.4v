@@ -1,5 +1,7 @@
 const db = require("../modulesMysql/connection");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const config = require("config");
 const salt = 10;
 
 class User {
@@ -13,19 +15,15 @@ class User {
 
   async save() {
     try {
-      const candidate = await User.findOne({
-        numberPhone: this.numberPhone,
-        email: this.email,
-      });
-      /*const candidate = await db.query(
-      `SELECT * FROM users WHERE
+      const candidate = await db.query(
+        `SELECT * FROM users WHERE
       numberPhone = '${this.numberPhone}' OR
        email = '${this.email}'`
-       );*/
+      );
       if (candidate) {
         return new Object();
       }
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await bcrypt.hash(this.password, salt);
       await db.query(
         `INSERT INTO users SET numberPhone= '${this.numberPhone}', 
         name = "${this.name}", 
@@ -38,6 +36,34 @@ class User {
         email: this.email,
         password: hashedPassword,
       };
+    } catch (error) {
+      console.log(` Что-то пошло не так `);
+      return { message: error.message };
+    }
+  }
+
+  async login() {
+    try {
+      const candidate = await db.query(
+        `SELECT * FROM users WHERE
+      numberPhone = '${this.numberPhone}'`
+      );
+      if (!candidate) {
+        return new Object();
+      }
+
+      const isMatch = await bcrypt.compare(this.password, hashedPassword )
+
+      if(!isMatch) {
+        return new Object()
+      }
+
+      const token = jwt.sign(
+      {userId: /*user.id....*/},
+      {expiresIn: "1h"},
+      config.get('jwtSecret'),
+      )
+      
     } catch (error) {
       console.log(` Что-то пошло не так `);
       return { message: error.message };
