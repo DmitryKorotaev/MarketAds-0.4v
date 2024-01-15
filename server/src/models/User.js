@@ -29,13 +29,21 @@ class User {
         name = "${this.name}", 
         email = "${this.email}", 
         password = "${hashedPassword}"`
-      );
-      return {
-        numberPhone: this.numberPhone,
-        name: this.name,
-        email: this.email,
-        password: hashedPassword,
-      };
+      ),
+        (error, results) => {
+          if (error) {
+            console.log(error, {
+              message: "данные не были добавленны в базу данных",
+            });
+          } else {
+            return {
+              numberPhone: this.numberPhone,
+              name: this.name,
+              email: this.email,
+              password: hashedPassword,
+            };
+          }
+        };
     } catch (error) {
       console.log(` Что-то пошло не так `);
       return { message: error.message };
@@ -52,18 +60,21 @@ class User {
         return new Object();
       }
 
-      const isMatch = await bcrypt.compare(this.password, hashedPassword )
+      const isMatch = await bcrypt.compare(this.password, hashedPassword);
 
-      if(!isMatch) {
-        return new Object()
+      if (!isMatch) {
+        return new Object();
       }
 
-      const token = jwt.sign(
-      {userId: /*user.id....*/},
-      {expiresIn: "1h"},
-      config.get('jwtSecret'),
-      )
-      
+      if (candidate) {
+        const token = jwt.sign(
+          { userId: candidate[0].ID, expiresIn: "1h" },
+          config.get("jwtSecret")
+        );
+        return { userId: candidate[0].ID, token };
+      } else {
+        return console.log("token error");
+      }
     } catch (error) {
       console.log(` Что-то пошло не так `);
       return { message: error.message };

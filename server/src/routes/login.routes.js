@@ -21,10 +21,15 @@ function checkObj(obj) {
 router.post(
   "/login",
   [
-    check("numberPhone")
-      .isMobilePhone()
-      .exists()
-      .withMessage("такой номер телефона не подойдет"),
+    check("email")
+      .isEmail()
+      .withMessage("такой email не подойдет")
+      .normalizeEmail(),
+
+    // check("numberPhone")
+    //   .isMobilePhone()
+    //   .exists()
+    //   .withMessage("такой номер телефона не подойдет"),
 
     check("password").exists().withMessage("неверный пароль"),
   ],
@@ -44,12 +49,12 @@ router.post(
       }
 
       const options = {
-        numberPhone: req.body.numberPhone,
+        email: req.body.email,
         password: req.body.password,
       };
 
       const UserLog = new User(options);
-      // const newUserLog = user.login()
+      const newUserLog = user.login();
       if (!checkObj(newUserLog)) {
         res.status(ACCEPTED).json({ message: "successful login!!!" });
       } else checkObj(newUserLog);
