@@ -1,4 +1,5 @@
 {
   "port": 4001,
-  "jwtSecret": "!@#$"
+  "jwtSecret": "!@#$",
+  "password": "1"
 }
