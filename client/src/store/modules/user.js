@@ -5,7 +5,7 @@ export default new Vuex.Store({
     User: {
       namespaced: true,
       state() {
-        return { isAuth: localStorage.getItem("auth") ? true : false };
+        return { islogin: localStorage.getItem("login") ? true : false };
       },
       //   getters: {},
       mutations: {
@@ -21,6 +21,27 @@ export default new Vuex.Store({
             email,
             password,
           });
+
+          if (res.status == 201) {
+            commit("changeAuth");
+            localStorage.setItem("login", res.data.token);
+            localStorage.setItem("id", res.data.userId);
+            router.push({ name: "/", query: { redirect: "/" } });
+          }
+        },
+
+        async login({ commit }, { numberPhone, password }) {
+          const res = await axios.post("/api/auth/login", {
+            numberPhone,
+            password,
+          });
+
+          if (res.status == 202) {
+            localStorage.setItem("login", res.data.token);
+            localStorage.setItem("id", res.data.userId);
+            commit("changeAuth");
+            router.push({ name: "/", query: { redirect: "/" } });
+          }
         },
       },
     },
