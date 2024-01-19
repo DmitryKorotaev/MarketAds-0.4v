@@ -81,4 +81,4 @@ class User {
     }
   }
 }
-module.exports = User;
+module.exports = model("User");

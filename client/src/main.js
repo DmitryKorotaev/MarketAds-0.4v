@@ -3,17 +3,16 @@ import App from "./App.vue";
 import router from "./router";
 import Vuelidate from "vuelidate";
 import store from "./store";
-import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 
 Vue.config.productionTip = false;
-axios.defaults.baseURL = "http://localhost:4001";
-axios.defaults.headers = {
+Axios.defaults.baseURL = "http://localhost:4001";
+Axios.defaults.headers = {
   "Content-Type": "application/json",
-  "X-Authorization": localStorage.getItem("login"),
+  "X-Authorization": localStorage.getItem(""),
 };
 
-Vue.prototype.$axios = axios;
+app.config.globalProperties.$axios = Axios;
 
 Vue.use(Vuelidate);
 
