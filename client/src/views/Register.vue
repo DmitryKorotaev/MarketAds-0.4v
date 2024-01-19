@@ -219,11 +219,9 @@ export default {
         password: this.password,
       };
 
+      this.$store.dispatch("user/register", formData);
+      this.$router.push({ name: "Login", query: { redirect: "/Login" } });
       // this.$router.push("/");
-    },
-
-    register() {
-      this.$store.dispatch("User/regiter", formData);
     },
   },
 };

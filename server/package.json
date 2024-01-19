@@ -4,10 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/app.js",
-    "server": "nodemon src/app.js",
-    "client": "npm run serve --prefix client",
-    "dev": "concurrently\"npm run server\"\"npm run client\""
+    "dev": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",

@@ -106,12 +106,11 @@ export default {
         password: this.password,
       };
 
+      this.$store.dispatch("user/login", formData);
       // this.$router.push("/");
     },
 
-    login() {
-      this.$store.dispatch("User/login", formData);
-    },
+    login() {},
   },
 };
 </script>
