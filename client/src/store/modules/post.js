@@ -1,6 +1,6 @@
-export default new Vuex.Store({
+export default {
   state: {},
   getters: {},
   mutations: {},
   actions: {},
-});
+};
