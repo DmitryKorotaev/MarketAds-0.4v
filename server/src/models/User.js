@@ -10,7 +10,7 @@ class User {
     this.name = options.name;
     this.email = options.email;
     this.password = options.password;
-    this.passwordConfirm = options.passwordConfirm;
+    //this.passwordConfirm = options.passwordConfirm;
   }
 
   async save() {
@@ -31,21 +31,21 @@ class User {
         password = "${hashedPassword}"`
       ),
         (error, results) => {
-          if (error) {
-            console.log(error, {
-              message: "данные не были добавленны в базу данных",
-            });
-          } else {
+          if (results) {
             return {
               numberPhone: this.numberPhone,
               name: this.name,
               email: this.email,
               password: hashedPassword,
             };
+          } else {
+            console.log(error, {
+              message: "данные не были добавленны в базу данных",
+            });
           }
         };
     } catch (error) {
-      console.log(` Что-то пошло не так `);
+      console.log(` Что-то пошло не так при создании пользователя `);
       return { message: error.message };
     }
   }
