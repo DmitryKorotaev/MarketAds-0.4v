@@ -8,15 +8,26 @@ const BAD_REQUEST = 400;
 const UNPROCESSABLE_ENTITY = 422;
 const INTERNAL_SERVER_ERROR = 500;
 
+// function checkObj(obj) {
+//   if (obj === undefined || obj === null) {
+//     console.log("Введите корректные данные!");
+//     return true;
+//   } else if (Object.keys(obj).length === 0) {
+//     console.log("Введите корректные данные!");
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+
 function checkObj(obj) {
-  if (Object.keys(obj).length === 0) {
-    console.log("Введите корректные данные!");
+  for (key in obj) {
     return false;
-  } else {
-    return true;
   }
+  return true;
 }
-// api/auth/register
+
+// /api/auth/register
 router.post(
   "/register",
   [
@@ -38,13 +49,13 @@ router.post(
       .isLength({ min: 8, max: 15 })
       .withMessage("your password must contain at least 8 characters"),
 
-    check("confirmPassword").custom((value, { req }) => {
-      if (value != req.body.password) {
-        console.log(req.body.password, req.body.confirmPassword);
-        throw new Error("confirm password does not match");
-      }
-      return true;
-    }),
+    // // check("confirmPassword").custom((value, { req }) => {
+    // //   if (value != req.body.password) {
+    // //     console.log(req.body.password, req.body.confirmPassword);
+    // //     throw new Error("confirm password does not match");
+    // //   }
+    //   return true;
+    // }),
   ],
 
   async (req, res) => {
@@ -53,36 +64,30 @@ router.post(
         res.status(BAD_REQUEST).json({ message: "invalid body.." });
       }
 
-      const errors = validationResult(req).formatWith(({ msg }) => msg);
-      if (!errors.isEmpty()) {
-        return res.status(UNPROCESSABLE_ENTITY).json({
-          error: errors.array(),
+      const error = validationResult(req).formatWith(({ msg }) => msg);
+      if (!error.isEmpty()) {
+        return res.json({
+          error: error.array(),
           message: "incorrect data during registration  :(",
         });
       }
-
       const options = {
         numberPhone: req.body.numberPhone,
         name: req.body.name,
         email: req.body.email,
-        pasword: req.body.password,
+        password: req.body.password,
       };
 
-      const userRer = new User(options);
+      const user = new User(options);
       const newUserReg = await user.save();
 
       if (!checkObj(newUserReg)) {
         res.status(CREATED).json({ message: "New user has been created!!!" });
-      } else checkObj(newUserReg);
-      {
-        res
-          .status(UNPROCESSABLE_ENTITY)
-          .json({ message: "incorrect data during registration  :(" });
+      } else {
+        res.status(UNPROCESSABLE_ENTITY).json({ message: error.message });
       }
-    } catch (e) {
-      res
-        .status(INTERNAL_SERVER_ERROR)
-        .json({ message: "Что-то пошло не так" });
+    } catch (error) {
+      res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
   }
 );

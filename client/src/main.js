@@ -7,7 +7,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 
 Vue.config.productionTip = false;
-axios.defaults.baseURL = "http://localhost:4001";
+axios.defaults.baseURL = "http://localhost:4100";
 axios.defaults.headers = {
   "Content-Type": "application/json",
   "X-Authorization": localStorage.getItem("login"),

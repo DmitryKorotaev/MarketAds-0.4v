@@ -53,7 +53,7 @@ router.post(
         password: req.body.password,
       };
 
-      const UserLog = new User(options);
+      const user = new User(options);
       const newUserLog = user.login();
       if (!checkObj(newUserLog)) {
         res.status(ACCEPTED).json({ message: "successful login!!!" });
@@ -66,7 +66,7 @@ router.post(
     } catch (e) {
       res
         .status(INTERNAL_SERVER_ERROR)
-        .json({ message: "Что-то пошло не так" });
+        .json({ message: "Что-то пошло не так (login)" });
     }
   }
 );
