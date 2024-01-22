@@ -78,6 +78,8 @@ router.post(
         password: req.body.password,
       };
 
+      console.log(req.body);
+
       const user = new User(options);
       const newUserReg = await user.save();
 

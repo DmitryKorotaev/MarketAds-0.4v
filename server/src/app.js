@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static(__dirname + "/uploads"));
-const PORT = config.get("port") || 4100;
+const PORT = config.get("port") || 4000;
 
 app.use("/api/auth", require("./routes/register.routes"));
 app.use("/api/auth", require("./routes/login.routes"));
