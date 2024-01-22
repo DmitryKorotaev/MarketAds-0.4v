@@ -1,4 +1,4 @@
-const db = require("../modulesMysql/connection.js");
+const db = require("../modulesMysql/connection");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const config = require("config");
@@ -16,7 +16,7 @@ class User {
   async save() {
     try {
       const candidate = await db.query(
-        `SELECT * FROM users WHERE
+        `SELECT * FROM Users WHERE
       numberPhone = '${this.numberPhone}' OR
        email = '${this.email}'`
       );
@@ -24,37 +24,32 @@ class User {
       if (candidate.length) {
         return new Object();
       }
+      console.log(candidate);
 
       const hashedPassword = await bcrypt.hash(this.password, salt);
       console.log(hashedPassword);
 
       await db.query(
-        `INSERT INTO users SET 
+        `INSERT INTO Users SET 
         numberPhone="${this.numberPhone}",
         email="${this.email}",
         name="${this.name}",
         password="${hashedPassword}"`
-      );
-      return {
-        numberPhone: this.numberPhone,
-        email: this.email,
-        password: hashedPassword,
-        name: this.name,
-      };
-      // (results, error) => {
-      //   if (results) {
-      //     return {
-      //       numberPhone: this.numberPhone,
-      //       name: this.name,
-      //       email: this.email,
-      //       password: hashedPassword,
-      //     };
-      //   } else {
-      //     console.log(error, {
-      //       message: "данные не были добавленны в базу данных",
-      //     });
-      //   }
-      // };
+      ),
+        (results, error) => {
+          if (results) {
+            return {
+              numberPhone: this.numberPhone,
+              name: this.name,
+              email: this.email,
+              password: hashedPassword,
+            };
+          } else {
+            console.log(error, {
+              message: "данные не были добавленны в базу данных",
+            });
+          }
+        };
     } catch (error) {
       console.log(` Что-то пошло не так при создании пользователя `);
       return { message: error.message };
@@ -64,7 +59,7 @@ class User {
   async login() {
     try {
       const candidate = await db.query(
-        `SELECT * FROM users WHERE
+        `SELECT * FROM Users WHERE
       numberPhone = '${this.numberPhone}'`
       );
       if (!candidate.length) {

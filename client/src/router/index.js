@@ -7,10 +7,10 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "home",
+    path: "/all",
+    name: "all",
     meta: { layout: "main", middlewhare: [auth] },
-    component: () => import("@/views/Home.vue"),
+    component: () => import("@/views/all.vue"),
   },
 
   {

@@ -109,8 +109,6 @@ export default {
       this.$store.dispatch("user/login", formData);
       // this.$router.push("/");
     },
-
-    login() {},
   },
 };
 </script>

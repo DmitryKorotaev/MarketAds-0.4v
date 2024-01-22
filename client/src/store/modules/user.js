@@ -25,7 +25,7 @@ export default {
         commit("changeAuth");
         localStorage.setItem("login", res.data.token);
         localStorage.setItem("id", res.data.userId);
-        router.push({ name: "/", query: { redirect: "/" } });
+        router.push({ name: "all", query: { redirect: "/all" } });
       }
     },
 
@@ -39,7 +39,7 @@ export default {
         localStorage.setItem("login", res.data.token);
         localStorage.setItem("id", res.data.userId);
         commit("changeAuth");
-        router.push({ name: "/", query: { redirect: "/" } });
+        router.push({ name: "all", query: { redirect: "/all" } });
       }
     },
   },
