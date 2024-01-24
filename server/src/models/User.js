@@ -16,7 +16,7 @@ class User {
   async save() {
     try {
       const candidate = await db.query(
-        `SELECT * FROM Users WHERE
+        `SELECT * FROM users WHERE
       numberPhone = '${this.numberPhone}' OR
        email = '${this.email}'`
       );
@@ -30,26 +30,18 @@ class User {
       console.log(hashedPassword);
 
       await db.query(
-        `INSERT INTO Users SET 
+        `INSERT INTO users SET 
         numberPhone="${this.numberPhone}",
         email="${this.email}",
         name="${this.name}",
         password="${hashedPassword}"`
-      ),
-        (results, error) => {
-          if (results) {
-            return {
-              numberPhone: this.numberPhone,
-              name: this.name,
-              email: this.email,
-              password: hashedPassword,
-            };
-          } else {
-            console.log(error, {
-              message: "данные не были добавленны в базу данных",
-            });
-          }
-        };
+      );
+      return {
+        numberPhone: this.numberPhone,
+        email: this.email,
+        name: this.name,
+        password: hashedPassword,
+      };
     } catch (error) {
       console.log(` Что-то пошло не так при создании пользователя `);
       return { message: error.message };
@@ -59,11 +51,13 @@ class User {
   async login() {
     try {
       const candidate = await db.query(
-        `SELECT * FROM Users WHERE
-      numberPhone = '${this.numberPhone}'`
+        `SELECT * FROM users WHERE email ="${this.email}"`
       );
-      if (!candidate.length) {
-        return new Object();
+
+      if (candidate.length) {
+        return { email: this.email };
+      } else {
+        new Object();
       }
 
       const isMatch = await bcrypt.compare(
@@ -74,6 +68,7 @@ class User {
       if (!isMatch) {
         return new Object();
       }
+      console.log(isMatch, "isMatch");
 
       const token = jwt.sign(
         { userId: candidate[0].ID, expiresIn: "1h" },

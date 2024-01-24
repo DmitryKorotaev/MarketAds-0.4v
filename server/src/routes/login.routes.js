@@ -30,17 +30,12 @@ function checkObj(obj) {
 router.post(
   "/login",
   [
-    check("email")
-      .isEmail()
-      .withMessage("такой email не подойдет")
-      .normalizeEmail(),
-
+    //check("email").exists().withMessage("такой email не подойдет"),
     // check("numberPhone")
     //   .isMobilePhone()
     //   .exists()
     //   .withMessage("такой номер телефона не подойдет"),
-
-    check("password").exists().withMessage("неверный пароль"),
+    //check("password").exists().withMessage("неверный пароль"),
   ],
 
   async (req, res) => {
@@ -51,25 +46,23 @@ router.post(
 
       const error = validationResult(req).formatWith(({ msg }) => msg);
       if (!error.isEmpty()) {
-        return res.status(UNPROCESSABLE_ENTITY).json({
-          error: error.array(),
-          message: "incorrect data during registration  :(",
-        });
+        return res.json({ message: error.array() });
       }
 
       const options = {
         email: req.body.email,
         password: req.body.password,
       };
+      console.log(options);
 
       const user = new User(options);
-      const newUserLog = user.login();
+      console.log(user);
+      const newUserLog = await user.login();
+      console.log(newUserLog, "newUserLog");
       if (!checkObj(newUserLog)) {
         res.status(ACCEPTED).json({ message: "successful login!!!" });
       } else {
-        res
-          .status(UNPROCESSABLE_ENTITY)
-          .json({ message: "invalid authorization data  :(" });
+        res.json({ message: error.message });
       }
     } catch (e) {
       res

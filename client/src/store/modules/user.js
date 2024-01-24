@@ -25,13 +25,13 @@ export default {
         commit("changeAuth");
         localStorage.setItem("login", res.data.token);
         localStorage.setItem("id", res.data.userId);
-        router.push({ name: "all", query: { redirect: "/all" } });
+        //router.push({ name: "all", query: { redirect: "/" } });
       }
     },
 
-    async login({ commit }, { numberPhone, password }) {
+    async login({ commit }, { email, password }) {
       const res = await axios.post("/api/auth/login", {
-        numberPhone,
+        email,
         password,
       });
 
@@ -39,7 +39,7 @@ export default {
         localStorage.setItem("login", res.data.token);
         localStorage.setItem("id", res.data.userId);
         commit("changeAuth");
-        router.push({ name: "all", query: { redirect: "/all" } });
+        router.push({ name: "all", query: { redirect: "/" } });
       }
     },
   },

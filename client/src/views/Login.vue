@@ -97,7 +97,6 @@ export default {
       console.log(this.$v);
       if (this.$v.$invalid) {
         this.$v.$touch();
-
         return;
       }
 
@@ -107,6 +106,7 @@ export default {
       };
 
       this.$store.dispatch("user/login", formData);
+      //this.$router.push({ name: "all", query: { redirect: "/" } });
       // this.$router.push("/");
     },
   },

@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/all",
+    path: "/",
     name: "all",
     meta: { layout: "main", middlewhare: [auth] },
     component: () => import("@/views/all.vue"),
