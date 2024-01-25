@@ -106,7 +106,7 @@ export default {
       };
 
       this.$store.dispatch("user/login", formData);
-      //this.$router.push({ name: "all", query: { redirect: "/" } });
+      this.$router.push({ name: "all", query: { redirect: "/" } });
       // this.$router.push("/");
     },
   },

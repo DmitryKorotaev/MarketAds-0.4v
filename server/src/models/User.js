@@ -24,10 +24,13 @@ class User {
       if (candidate.length) {
         return new Object();
       }
-      console.log(candidate);
+      //console.log(candidate);
 
       const hashedPassword = await bcrypt.hash(this.password, salt);
-      console.log(hashedPassword);
+      //console.log(hashedPassword);
+
+      // const isMatch = await bcrypt.compare(this.password, hashedPassword);
+      //console.log(isMatch, "isMatch");
 
       await db.query(
         `INSERT INTO users SET 
@@ -44,7 +47,7 @@ class User {
       };
     } catch (error) {
       console.log(` Что-то пошло не так при создании пользователя `);
-      return { message: error.message };
+      return new Object();
     }
   }
 
@@ -53,31 +56,34 @@ class User {
       const candidate = await db.query(
         `SELECT * FROM users WHERE email ="${this.email}"`
       );
+      //console.log(candidate);
 
-      if (candidate.length) {
-        return { email: this.email };
-      } else {
-        new Object();
+      if (!candidate.length) {
+        return new Object();
       }
 
+      //console.log(this.password);
       const isMatch = await bcrypt.compare(
         this.password,
         candidate[0].password
       );
 
+      //console.log(isMatch, "isMatch");
+
       if (!isMatch) {
         return new Object();
       }
-      console.log(isMatch, "isMatch");
 
       const token = jwt.sign(
-        { userId: candidate[0].ID, expiresIn: "1h" },
+        { userId: candidate[0].id, expiresIn: "1h" },
         config.get("jwtSecret")
       );
-      return { userId: candidate[0].ID, token };
+      //console.log(token);
+      return { userId: candidate[0].id, token };
     } catch (error) {
       console.log(` Что-то пошло не так `);
-      return { message: error.message };
+      return new Object();
+      // { message: error.message };
     }
   }
 }

@@ -30,12 +30,16 @@ function checkObj(obj) {
 router.post(
   "/login",
   [
-    //check("email").exists().withMessage("такой email не подойдет"),
+    check("email")
+      .isEmail()
+      .withMessage("такой email не подойдет")
+      .normalizeEmail(),
+
     // check("numberPhone")
     //   .isMobilePhone()
     //   .exists()
     //   .withMessage("такой номер телефона не подойдет"),
-    //check("password").exists().withMessage("неверный пароль"),
+    check("password").exists().withMessage("неверный пароль"),
   ],
 
   async (req, res) => {
@@ -53,16 +57,16 @@ router.post(
         email: req.body.email,
         password: req.body.password,
       };
-      console.log(options);
+      // console.log(options);
 
       const user = new User(options);
-      console.log(user);
+      // console.log(user);
       const newUserLog = await user.login();
       console.log(newUserLog, "newUserLog");
       if (!checkObj(newUserLog)) {
         res.status(ACCEPTED).json({ message: "successful login!!!" });
       } else {
-        res.json({ message: error.message });
+        res.status(UNPROCESSABLE_ENTITY).json({ message: error.message });
       }
     } catch (e) {
       res
