@@ -4,9 +4,9 @@ import axios from "axios";
 export default {
   namespaced: true,
   state() {
-    return { islogin: localStorage.getItem("login") ? true : false };
+    return { isAuth: localStorage.getItem("login") ? true : false };
   },
-  //   getters: {},
+
   mutations: {
     changeAuth(state) {
       state.isAuth = !state.isAuth;

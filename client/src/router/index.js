@@ -5,6 +5,17 @@ import auth from "./middleware/auth";
 
 Vue.use(VueRouter);
 
+["push", "replace"].forEach((method) => {
+  const originalMethod = VueRouter.prototype[method];
+  VueRouter.prototype[method] = function m(location) {
+    return originalMethod.call(this, location).catch((error) => {
+      if (error.name !== "NavigationDuplicated") {
+        // capture exception
+      }
+    });
+  };
+});
+
 const routes = [
   {
     path: "/",
