@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <form class="form3">
-      <div class="d-flex justify-content-center mb-3 pb-1">
+      <div class="d-flex justify-content-center mb-2 pb-1">
         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219"></i>
         <span class="h1 fw-bold mb-0">Новое объявление</span>
       </div>
@@ -86,7 +86,6 @@ export default {
     selected: "",
     files: [],
   }),
-
   methods: {
     onSubmit() {
       const formData = new FormData();

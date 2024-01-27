@@ -22,7 +22,17 @@ export default {
       try {
         formData.append("id", state.id);
         const res = await axios.post("/api/post/add", formData);
-      } catch {}
+        if (res.status == 201) {
+          commit(changeCreate);
+        }
+        const created = commit("message");
+        if (created) {
+          commit("changeCreate");
+          return { message: "ads has been created!" };
+        }
+      } catch (error) {
+        return error;
+      }
     },
   },
 };
