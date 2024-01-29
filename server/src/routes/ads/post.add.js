@@ -8,7 +8,7 @@ const router = Router();
 INTERNAL_SERVER_ERROR = 500;
 const BAD_REQUEST = 400;
 const CREATED = 201;
-
+// /api/post/add
 router.post("/add", upload.array("files"), async (req, res) => {
   try {
     if (!req.body) {
@@ -19,12 +19,14 @@ router.post("/add", upload.array("files"), async (req, res) => {
       description: req.body.description,
       id: req.body.id,
       category: req.body.category,
+      files: req.body.files,
     };
-
+    console.log(options);
     const ads = new Ads(options);
     const newAds = await ads.createAds();
-
-    res.status(CREATED).json({ message: "New user has been created!!!" });
+    if (newAds) {
+      res.status(CREATED).json({ message: "New user has been created!!!" });
+    }
   } catch (error) {
     res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
   }
