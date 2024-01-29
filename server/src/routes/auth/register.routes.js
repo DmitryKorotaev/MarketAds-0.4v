@@ -83,11 +83,7 @@ router.post(
       const user = new User(options);
       const newUserReg = await user.save();
 
-      if (!checkObj(newUserReg)) {
-        res.status(CREATED).json({ message: "New user has been created!!!" });
-      } else {
-        res.status(UNPROCESSABLE_ENTITY).json({ message: error.message });
-      }
+      c;
     } catch (error) {
       res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
     }
