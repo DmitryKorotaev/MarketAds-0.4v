@@ -1,3 +1,6 @@
+import router from "@/router";
+import axios from "axios";
+
 export default {
   namespaced: true,
   state() {
@@ -18,10 +21,26 @@ export default {
     },
   },
   actions: {
-    async create({ commit, state }, formData) {
+    async create({ commit, state }, options) {
+      console.log(options, "options");
       try {
-        formData.append("id", state.id);
-        const res = await axios.post("/api/post/add", formData);
+        const f = new FormData();
+        for (let i = 0; i < options.files.length; i++) {
+          let file = options.files[i];
+          console.log(file, "file");
+          f.append("files", file);
+          f.append("id", state.id);
+          f.append("title", options.title);
+          f.append("description", options.description);
+          f.append("category", options.category);
+        }
+
+        const res = await axios.post("/api/post/add", f, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
         if (res.status == 201) {
           commit(changeCreate);
         }
