@@ -10,7 +10,7 @@ Vue.config.productionTip = false;
 axios.defaults.baseURL = "http://localhost:4000";
 axios.defaults.headers = {
   "Content-Type": "application/json",
-  "X-Authorization": localStorage.getItem("login"),
+  "X-Authorization": localStorage.getItem("Login"),
 };
 
 Vue.prototype.$axios = axios;

@@ -35,14 +35,10 @@ export default {
           f.append("category", options.category);
         }
 
-        const res = await axios.post("/api/post/add", f, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const res = await axios.post("/api/post/add", f);
 
         if (res.status == 201) {
-          commit(changeCreate);
+          commit("changeCreate");
         }
         const created = commit("message");
         if (created) {

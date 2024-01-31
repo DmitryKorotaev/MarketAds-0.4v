@@ -1,5 +1,5 @@
 export default function guest({ next }) {
-  if (localStorage.getItem("login")) {
+  if (localStorage.getItem("Login")) {
     return next({
       name: "/",
     });

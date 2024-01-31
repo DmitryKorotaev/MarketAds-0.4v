@@ -1,5 +1,11 @@
 <template>
-  <form class="form3" @submit.prevent="onSubmit" enctype="multipart/form-data">
+  <form
+    class="form3"
+    @submit.prevent="onSubmit"
+    enctype="multipart/form-data"
+    action="/upload"
+    method="post"
+  >
     <div class="container">
       <div class="d-flex justify-content-center mb-2 pb-1">
         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219"></i>
@@ -40,7 +46,7 @@
             ref="files"
             @change="handleFileUpload()"
             multiple
-            accept="image/*"
+            accept="application/x-zip-compressed,image/*"
             class="invisible"
           />
         </div>

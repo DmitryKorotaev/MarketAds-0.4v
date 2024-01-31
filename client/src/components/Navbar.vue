@@ -3,16 +3,16 @@
     <div class="container-fluid">
       <!-- <a class="navbar-brand"><img src="@/img/8UEdOr9L78U.jpg" alt="Market Ads" width="90" height="40"></a> -->
       <div class="indent">
-        <router-link
-          to="/Login"
-          class="text-decoration-none link-light"
-          @click.prevent="enter"
-          >Вход</router-link
-        >
+        <button class="btn btn-outline-success" type="button" @click="logOut">
+          {{ login }}
+        </button>
         <!-- переделать отклик размещения объявления -->
         <router-link to="/Creating-ads" class="text-decoration-none link-light"
           >Разместить объявление</router-link
         >
+        <router-link to="/" class="nav-link active">
+          Мои объявления
+        </router-link>
       </div>
     </div>
   </nav>
@@ -21,9 +21,13 @@
 <script>
 export default {
   methods: {
-    logout() {
-      console.log("enter");
-      this.$router.push("/Login?message=enter");
+    logOut() {
+      this.$store.dispatch("user/logout");
+    },
+  },
+  computed: {
+    login() {
+      return this.$store.state.user.isAuth ? "выйти" : "войти";
     },
   },
 };

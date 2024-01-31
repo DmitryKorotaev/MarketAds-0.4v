@@ -4,7 +4,7 @@ import axios from "axios";
 export default {
   namespaced: true,
   state() {
-    return { isAuth: localStorage.getItem("login") ? true : false };
+    return { isAuth: localStorage.getItem("Login") ? true : false };
   },
 
   mutations: {
@@ -23,9 +23,10 @@ export default {
 
       if (res.status == 201) {
         commit("changeAuth");
-        localStorage.setItem("login", res.data.token);
+        localStorage.setItem("Login", res.data.token);
         localStorage.setItem("id", res.data.userId);
-        //router.push({ name: "all", query: { redirect: "/" } });
+
+        router.push({ name: "all", query: { redirect: "/" } });
       }
     },
 
@@ -36,10 +37,23 @@ export default {
       });
 
       if (res.status == 202) {
-        localStorage.setItem("login", res.data.token);
+        localStorage.setItem("Login", res.data.token);
         localStorage.setItem("id", res.data.userId);
         commit("changeAuth");
+
         router.push({ name: "all", query: { redirect: "/" } });
+      }
+    },
+
+    async logout({ commit }) {
+      console.log(this.logout);
+      if (localStorage.getItem("Login")) {
+        commit("changeAuth");
+        localStorage.removeItem("Login");
+        localStorage.removeItem("id");
+        router.push({ name: "Login", query: { redirect: "/Login" } });
+      } else {
+        router.push({ name: "Login", query: { redirect: "/Login" } });
       }
     },
   },
