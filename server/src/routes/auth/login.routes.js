@@ -63,8 +63,9 @@ router.post(
       // console.log(user);
       const newUserLog = await user.login();
       console.log(newUserLog, "newUserLog");
+
       if (!checkObj(newUserLog)) {
-        res.status(ACCEPTED).json({ message: "successful login!!!" });
+        res.status(ACCEPTED).json(newUserLog);
       } else {
         res.status(UNPROCESSABLE_ENTITY).json({ message: error.message });
       }

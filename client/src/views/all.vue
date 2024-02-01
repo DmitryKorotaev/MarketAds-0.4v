@@ -45,8 +45,12 @@ export default {
     selection: "",
     searchInput: "",
   }),
+
   mounted() {
-    //.............
+    this.$nextTick(async () => {
+      const response = await this.$axios.get("/api/post/all");
+      this.posts = response.data;
+    });
   },
 
   methods: {
