@@ -26,7 +26,7 @@
         </button>
       </div>
     </div>
-    <li class="list-group" v-for="post in posts" :key="post">
+    <li class="list-group" v-for="post in posts">
       <Post :Post="post" />
     </li>
   </div>

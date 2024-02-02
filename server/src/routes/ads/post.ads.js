@@ -1,7 +1,6 @@
 const { Router, application } = require("express");
-const db = require("../../modulesMysql/connection");
+const Ads = require("../../models/Ads");
 const multer = require("multer");
-
 path = require("path");
 
 var storage = multer.diskStorage({
@@ -19,48 +18,66 @@ const router = Router();
 INTERNAL_SERVER_ERROR = 500;
 const BAD_REQUEST = 400;
 const CREATED = 201;
+
+function checkObj(obj) {
+  for (key in obj) {
+    return false;
+  }
+  return true;
+}
+
 // /api/post/add
 router.post("/add", upload.array("files"), async (req, res) => {
   try {
     if (!req.body) {
       return res.status(BAD_REQUEST).json({ message: "invalid body....." });
     }
-
-    const { title, description, id, category } = req.body;
-    console.log(req.body, "req.body");
     const filename = [];
     for (let i = 0; i < req.files.length; i++) {
       filename.push(req.files[i].filename);
     }
-    const files = JSON.stringify(filename);
-    const categories = await db.query(
-      `SELECT * FROM category WHERE category="${category}"`
-    );
-
-    const categoryId = categories[0].id;
-    await db.query(
-      `INSERT INTO ads SET 
-    userId="${id}",
-    title="${title}",
-    description="${description}",
-    category="${categoryId}",
-    image=?`,
-      [files]
-    );
-
-    res.status(CREATED).json({ message: "The ad has been created!!! (: " });
+    const options = new Object(req.body);
+    options.filename = filename;
+    ads = new Ads(options);
+    newAds = await ads.createAds();
+    if (!checkObj(newAds))
+      res
+        .status(CREATED)
+        .json(newAds)
+        .json({ message: "The ad has been created!!! (: " });
   } catch (error) {
     res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
     console.log("Что-то пошло не так");
   }
 });
-
-router.post("/all", async (req, res) => {
-  const ads = await db.query(`SELECTED * FROM ads`);
-  ads = ads.map((ad) => {
-    ad.image = JSON.parse(ad.image);
-    return ad;
-  });
-  res.status(200).json({ ads: ads });
+// /api/post/all
+router.get("/all", async (req, res) => {
+  const options = new Object(req.body);
+  ads = new Ads(options);
+  allAds = await ads.all();
+  if (!allAds) {
+    return res.status(BAD_REQUEST).json({ message: "error get all" });
+  } else {
+    return res.json(allAds);
+  }
+});
+router.get("/all/:id", async (req, res) => {
+  try {
+    const options = {
+      id: req.params.id,
+    };
+    const ads = new Ads(options);
+    const current = await ads.currentAds();
+    if (current.length) {
+      return res.status(200).json(current);
+    } else {
+      return res.status(BAD_REQUEST).json({ message: "ads doesnt exist...." });
+    }
+  } catch (error) {
+    return (
+      res.status(INTERNAL_SERVER_ERROR).json({ message: error.message }),
+      console.log("ошибка в запросе all/:id")
+    );
+  }
 });
 module.exports = router;

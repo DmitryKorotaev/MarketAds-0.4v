@@ -57,7 +57,7 @@ export default {
     },
     async all(context, data) {
       try {
-        const res = await axios.get(`/api/post/all/.....`);
+        const res = await axios.get(`/api/post/all`);
         if (res.data) {
           return res.data;
         }
