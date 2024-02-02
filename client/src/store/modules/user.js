@@ -36,17 +36,19 @@ export default {
         password,
       });
 
-      if (res.status == 202) {
+      if (response.status == 202) {
+        console.log(res.data.userId, "res");
         localStorage.setItem("Login", res.data.token);
         localStorage.setItem("id", res.data.userId);
         commit("changeAuth");
+        console.log();
 
         router.push({ name: "all", query: { redirect: "/" } });
       }
     },
 
     async logout({ commit }) {
-      console.log(this.logout);
+      console.log(this.logout, "logOut");
       if (localStorage.getItem("Login")) {
         commit("changeAuth");
         localStorage.removeItem("Login");

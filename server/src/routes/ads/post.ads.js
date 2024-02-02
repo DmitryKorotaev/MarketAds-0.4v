@@ -2,13 +2,24 @@ const { Router, application } = require("express");
 const db = require("../../modulesMysql/connection");
 const multer = require("multer");
 
-const upload = multer({ dest: "uploads/" });
+path = require("path");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+  },
+});
+
+var upload = multer({ storage: storage });
 const router = Router();
 
 INTERNAL_SERVER_ERROR = 500;
 const BAD_REQUEST = 400;
 const CREATED = 201;
-
+// /api/post/add
 router.post("/add", upload.array("files"), async (req, res) => {
   try {
     if (!req.body) {
@@ -16,6 +27,7 @@ router.post("/add", upload.array("files"), async (req, res) => {
     }
 
     const { title, description, id, category } = req.body;
+    console.log(req.body, "req.body");
     const filename = [];
     for (let i = 0; i < req.files.length; i++) {
       filename.push(req.files[i].filename);
@@ -24,9 +36,9 @@ router.post("/add", upload.array("files"), async (req, res) => {
     const categories = await db.query(
       `SELECT * FROM category WHERE category="${category}"`
     );
-    console.log(req.body, "req.body");
+
     const categoryId = categories[0].id;
-    const createAds = await db.query(
+    await db.query(
       `INSERT INTO ads SET 
     userId="${id}",
     title="${title}",
@@ -35,14 +47,20 @@ router.post("/add", upload.array("files"), async (req, res) => {
     image=?`,
       [files]
     );
-    console.log(createAds, "createAds");
-    if (createAds) {
-      res.status(CREATED).json({ message: "The ad has been created!!! (: " });
-    }
+
+    res.status(CREATED).json({ message: "The ad has been created!!! (: " });
   } catch (error) {
     res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
     console.log("Что-то пошло не так");
   }
 });
 
+router.post("/all", async (req, res) => {
+  const ads = await db.query(`SELECTED * FROM ads`);
+  ads = ads.map((ad) => {
+    ad.image = JSON.parse(ad.image);
+    return ad;
+  });
+  res.status(200).json({ ads: ads });
+});
 module.exports = router;

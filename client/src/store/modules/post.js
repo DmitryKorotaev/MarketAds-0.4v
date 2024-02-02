@@ -9,6 +9,7 @@ export default {
       id: localStorage.getItem("id"),
     };
   },
+
   // getters: {},
   mutations: {
     changeCreate(state) {
@@ -23,6 +24,7 @@ export default {
   actions: {
     async create({ commit, state }, options) {
       console.log(options, "options");
+
       try {
         const f = new FormData();
         for (let i = 0; i < options.files.length; i++) {
@@ -35,7 +37,11 @@ export default {
           f.append("category", options.category);
         }
 
-        const res = await axios.post("/api/post/add", f);
+        const res = await axios.post("/api/post/add", f, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
         if (res.status == 201) {
           commit("changeCreate");
@@ -44,6 +50,16 @@ export default {
         if (created) {
           commit("changeCreate");
           return { message: "ads has been created!" };
+        }
+      } catch (error) {
+        return error;
+      }
+    },
+    async all(context, data) {
+      try {
+        const res = await axios.get(`/api/post/all/.....`);
+        if (res.data) {
+          return res.data;
         }
       } catch (error) {
         return error;

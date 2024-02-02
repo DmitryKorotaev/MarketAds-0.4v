@@ -1,11 +1,5 @@
 <template>
-  <form
-    class="form3"
-    @submit.prevent="onSubmit"
-    enctype="multipart/form-data"
-    action="/upload"
-    method="post"
-  >
+  <form class="form3" @submit.prevent="onSubmit">
     <div class="container">
       <div class="d-flex justify-content-center mb-2 pb-1">
         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219"></i>
@@ -39,25 +33,28 @@
       </div>
 
       <div class="container">
-        <hr />
-        <div class="large-12 medium-12 small-12 cell">
-          <input
-            type="file"
-            ref="files"
-            @change="handleFileUpload()"
-            multiple
-            accept="application/x-zip-compressed,image/*"
-            class="invisible"
-          />
-        </div>
+        <form enctype="multipart/form-data" action="/upload" method="POST">
+          <hr />
+          <div class="large-12 medium-12 small-12 cell">
+            <input
+              type="file"
+              ref="files"
+              @change="handleFileUpload()"
+              multiple
+              accept="application/x-zip-compressed,image/*"
+              class="invisible"
+            />
+          </div>
+        </form>
 
         <br />
         <div
           class="large-13 medium-13 small-13 cell clear"
-          v-for="file in files"
+          v-for="(file, index) in files"
+          :key="index"
         >
           {{ file.name }}
-          <button class="btn btn-danger" @click="removeFiles(file)">
+          <button class="btn btn-danger" @click="removeFiles(index)">
             Remove
           </button>
         </div>

@@ -84,7 +84,7 @@ router.post(
       const newUserReg = await user.save();
 
       if (!checkObj(newUserReg)) {
-        res.status(CREATED).json({ message: "New user has been created!!!" });
+        res.status(CREATED).json(newUserReg);
       } else {
         res.status(UNPROCESSABLE_ENTITY).json({ message: error.message });
       }

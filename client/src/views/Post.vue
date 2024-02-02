@@ -11,13 +11,14 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ title }}</h5>
+      <h5></h5>
       <router-link :to="{ name: 'id', params: { id } }"
         ><h5 class="btn btn-info link">About</h5>
       </router-link>
-      <p class="card-text">
+      <!-- <p class="card-text">
         Some quick example text to build on the card title and make up the bulk
         of the card's content.
-      </p>
+      </p> -->
     </div>
   </div>
 </template>
