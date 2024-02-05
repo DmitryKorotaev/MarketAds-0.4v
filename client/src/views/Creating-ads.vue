@@ -103,7 +103,7 @@ export default {
       // }
       this.$store.dispatch("post/create", options);
       this.title = this.selected = this.description = "";
-      // this.files = [];
+      this.files = [];
     },
 
     handleFileUpload() {

@@ -23,13 +23,11 @@ export default {
   },
   actions: {
     async create({ commit, state }, options) {
-      console.log(options, "options");
-
       try {
         const f = new FormData();
         for (let i = 0; i < options.files.length; i++) {
           let file = options.files[i];
-          console.log(file, "file");
+
           f.append("files", file);
           f.append("id", state.id);
           f.append("title", options.title);
@@ -47,15 +45,21 @@ export default {
           commit("changeCreate");
         }
         const created = commit("message");
+        console.log(state.isCreate);
         if (created) {
           commit("changeCreate");
-          return { message: "ads has been created!" };
         }
+        return (
+          { message: "ads has been created!" },
+          router.push({ name: "all", query: { redirect: "/" } }),
+          console.log(data, "data")
+        );
       } catch (error) {
         return error;
       }
     },
     async all(context, data) {
+      console.log(data, "data");
       try {
         const res = await axios.get(`/api/post/all`);
         if (res.data) {

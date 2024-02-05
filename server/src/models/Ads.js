@@ -20,8 +20,9 @@ class Ads {
         image=?`,
         [files]
       );
-      const ads = this.options;
-      return ads;
+      const adds = this.options;
+      console.log(adds, "adds");
+      return adds;
     } catch (error) {
       return new Object();
     }
@@ -29,14 +30,15 @@ class Ads {
 
   async all() {
     try {
-      const ads = await db.query(`SELECT * FROM ads`);
+      const adds = await db.query(`SELECT * FROM ads`);
 
-      for (let i = 0; i < ads.length; i++) {
-        ads[i].image = JSON.parse(ads[i].image);
+      for (let i = 0; i < adds.length; i++) {
+        adds[i].image = JSON.parse(adds[i].image);
       }
       // ads = ads.map((ad) => {
       //   ad.image = JSON.parse(ad.image);
-      return ads;
+      console.log(adds, "adds");
+      return adds;
       // });
     } catch (error) {
       return false, console.log("error method all");
@@ -44,17 +46,17 @@ class Ads {
   }
   async currentAds() {
     try {
-      const ads = await db.query(
+      const adds = await db.query(
         `SELECT * FROM ads WHERE ID="${this.options.id}" `
       );
-      ads[0].image = JSON.parse(ads[0].image);
+      adds[0].image = JSON.parse(adds[0].image);
       const user = await db.query(
-        `SELECT email FROM  users WHERE ID= "${post[0].userId}"`
+        `SELECT email FROM  users WHERE ID= "${adds[0].userId}"`
       );
-      if (ads.length) {
-        ads.push(user[0]);
+      if (adds.length) {
+        adds.push(user[0]);
       }
-      return ads;
+      return adds;
     } catch (error) {
       return new Array();
     }

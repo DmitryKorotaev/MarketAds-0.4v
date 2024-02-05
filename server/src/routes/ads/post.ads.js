@@ -40,11 +40,11 @@ router.post("/add", upload.array("files"), async (req, res) => {
     options.filename = filename;
     ads = new Ads(options);
     newAds = await ads.createAds();
-    if (!checkObj(newAds))
-      res
-        .status(CREATED)
-        .json(newAds)
-        .json({ message: "The ad has been created!!! (: " });
+    if (!checkObj(newAds)) {
+      return res.status(CREATED).json(newAds);
+    } else {
+      return res.status(BAD_REQUEST);
+    }
   } catch (error) {
     res.status(INTERNAL_SERVER_ERROR).json({ message: error.message });
     console.log("Что-то пошло не так");
@@ -55,12 +55,14 @@ router.get("/all", async (req, res) => {
   const options = new Object(req.body);
   ads = new Ads(options);
   allAds = await ads.all();
-  if (!allAds) {
-    return res.status(BAD_REQUEST).json({ message: "error get all" });
+  console.log(allAds, "allAds");
+  if (allAds) {
+    return res.status(200).json(allAds);
   } else {
-    return res.json(allAds);
+    return res.status(BAD_REQUEST).json({ message: "error get all" });
   }
 });
+// /api/post/all/:id
 router.get("/all/:id", async (req, res) => {
   try {
     const options = {

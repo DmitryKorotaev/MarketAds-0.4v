@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import guest from "./middleware/guest";
 import auth from "./middleware/auth";
-import Post from "@/views/Post.vue";
+import ads from "@/views/Ads.vue";
 import Login from "@/views/Login.vue";
 
 Vue.use(VueRouter);
@@ -54,7 +54,7 @@ const routes = [
     name: "id",
     props: true,
     meta: { layout: "main", middlewhare: [auth] },
-    component: Post,
+    component: ads,
   },
 ];
 

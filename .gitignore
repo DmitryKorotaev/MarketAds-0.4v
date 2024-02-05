@@ -1,4 +1,5 @@
 node_modules
+uploads
 babel.config.js
 jsconfig.json
 package-lock.json

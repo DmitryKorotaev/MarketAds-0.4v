@@ -36,12 +36,10 @@ export default {
         password,
       });
 
-      if (response.status == 202) {
-        console.log(res.data.userId, "res");
+      if (res.status == 202) {
         localStorage.setItem("Login", res.data.token);
         localStorage.setItem("id", res.data.userId);
         commit("changeAuth");
-        console.log();
 
         router.push({ name: "all", query: { redirect: "/" } });
       }

@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-      <img :src="baseUrl + image" alt="" class="img-fluid" />
+      <img :src="image + baseUrl" alt="image" class="img-fluid" />
       <a href="#!">
         <div
           class="mask"
@@ -11,7 +11,6 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ title }}</h5>
-      <h5></h5>
       <router-link :to="{ name: 'id', params: { id } }"
         ><h5 class="btn btn-info link">About</h5>
       </router-link>
@@ -26,16 +25,28 @@
 <script>
 export default {
   props: {
-    post: Object,
+    adds: Object,
   },
-  data: () => ({
-    title: this.post.title,
-    description: this.post.description,
-    id: this.post.ID,
-    image: this.post.image[0],
-    baseUrl: "http://localhost:4000",
-    index: 0,
-  }),
+  computed: {
+    title() {
+      return this.adds.title;
+    },
+    description() {
+      return this.adds.description;
+    },
+    id() {
+      return this.adds.ID;
+    },
+    image() {
+      return this.adds.image[0];
+    },
+    baseUrl() {
+      return "http://localhost:4000";
+    },
+    index() {
+      return 0;
+    },
+  },
 };
 </script>
 <style>

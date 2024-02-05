@@ -26,30 +26,32 @@
         </button>
       </div>
     </div>
-    <li class="list-group" v-for="post in posts">
-      <Post :Post="post" />
+    <li class="list-group" v-for="ads in adds">
+      <ads :ads="ads" />
     </li>
   </div>
 </template>
 
 <script>
-import Post from "@/views/Post.vue";
+import ads from "@/views/Ads.vue";
 
 export default {
   components: {
-    Post,
+    ads,
   },
 
   data: () => ({
-    posts: [],
+    adds: [],
     selection: "",
     searchInput: "",
   }),
 
   mounted() {
     this.$nextTick(async () => {
-      const response = await this.$axios.get("/api/post/all");
-      this.posts = response.data;
+      const res = await this.$axios.get("/api/post/all");
+      this.adds = res.data;
+      console.log(this.adds, "this.adds");
+      console.log(res.data, "res.data");
     });
   },
 
