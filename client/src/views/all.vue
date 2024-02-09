@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="col-md-6">
       <div class="inline" id="con1">
-        <select id="inputState" class="form-selectet" v-model="selection">
+        <select id="inputState" class="form-select" v-model="selection">
           <option :value="{ value: 'other' }" selected>other</option>
           <option :value="{ value: 'auto' }">Автомобили</option>
           <option :value="{ value: 'realEstate' }">Недвижимость</option>
@@ -16,46 +16,52 @@
           v-model="searchInput"
           aria-describedby="button-addon2"
         />
-        <button class="btn btn-success" @click="searchPost">Accept</button>
+
         <button
           class="btn btn-outline-secondary"
           type="button"
           id="button-addon2"
+          @click="searchPost"
         >
-          Кнопка
+          найти
         </button>
       </div>
     </div>
-    <li class="list-group" v-for="ads in adds">
+    <li class="list-group" v-if="adds.length > 0" v-for="ads in adds">
       <ads :ads="ads" />
     </li>
+    <!-- <span v-else >Массив adds пустой</span> -->
   </div>
 </template>
 
 <script>
 import ads from "@/views/Ads.vue";
-
+import { mapGetters } from "vuex";
 export default {
   components: {
     ads,
   },
 
   data: () => ({
-    adds: [],
     selection: "",
     searchInput: "",
   }),
-
   mounted() {
-    this.$nextTick(async () => {
-      const res = await this.$axios.get("/api/post/all");
-      this.adds = res.data;
-      console.log(this.adds, "this.adds");
-      console.log(res.data, "res.data");
-    });
+    this.$store.dispatch("post/all");
+  },
+  computed: {
+    ...mapGetters("post", ["adds"]),
   },
 
   methods: {
+    // async fetchData() {
+    //   try {
+    //     const res = await this.$axios.get("/api/post/all");
+    //     this.adds = res.data;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
     async searchPost() {
       try {
         let selector = new String();
@@ -80,15 +86,55 @@ export default {
 <style>
 .container-fluid {
   min-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+}
+
+.col-md-6 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inline {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
 }
 
 .form-select {
-  display: flex;
-  width: 170px;
-  margin: 3em;
+  width: 150px;
+  margin-right: 1em;
 }
+
+.form-control {
+  width: 300px;
+}
+
 .input-group {
   display: flex;
   justify-content: center;
+  margin-bottom: 2em;
+}
+
+.btn {
+  margin-left: 1em;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2em;
+}
+
+.ads {
+  margin: 1em;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 500px;
 }
 </style>

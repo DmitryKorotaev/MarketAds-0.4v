@@ -8,7 +8,7 @@
     <div class="container">
       <div class="row d-flex justify-content-center align-items-center">
         <div class="col-md-6">
-          <div class="card mt-6 mb-3">
+          <div class="card" style="width: 90%">
             <div class="card-body p-md-4 text-black">
               <router-view></router-view>
             </div>

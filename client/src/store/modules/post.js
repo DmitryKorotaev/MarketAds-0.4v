@@ -1,5 +1,6 @@
 import router from "@/router";
 import axios from "axios";
+import { watch } from "vue";
 
 export default {
   namespaced: true,
@@ -7,10 +8,10 @@ export default {
     return {
       isCreate: false,
       id: localStorage.getItem("id"),
+      adds: [],
     };
   },
 
-  // getters: {},
   mutations: {
     changeCreate(state) {
       state.isCreate = !state.isCreate;
@@ -19,6 +20,10 @@ export default {
       if (state.isCreate) {
         return true;
       }
+    },
+    allAds(state, adds) {
+      state.adds = adds;
+      console.log(adds, "adds");
     },
   },
   actions: {
@@ -45,29 +50,33 @@ export default {
           commit("changeCreate");
         }
         const created = commit("message");
-        console.log(state.isCreate);
+        //console.log(state.isCreate);
         if (created) {
           commit("changeCreate");
         }
         return (
           { message: "ads has been created!" },
-          router.push({ name: "all", query: { redirect: "/" } }),
-          console.log(data, "data")
+          router.push({ name: "all", query: { redirect: "/" } })
         );
       } catch (error) {
         return error;
       }
     },
-    async all(context, data) {
-      console.log(data, "data");
+    async all({ commit }) {
       try {
-        const res = await axios.get(`/api/post/all`);
+        const res = await axios.get("api/post/all");
         if (res.data) {
-          return res.data;
+          commit("allAds", res.data);
+          console.log(res.data, "res.data");
+        } else {
+          res.status == 404;
         }
       } catch (error) {
         return error;
       }
     },
+  },
+  getters: {
+    adds: (state) => state.adds,
   },
 };

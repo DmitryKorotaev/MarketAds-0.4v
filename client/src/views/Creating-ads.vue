@@ -48,26 +48,24 @@
         </form>
 
         <br />
-        <div
-          class="large-13 medium-13 small-13 cell clear"
-          v-for="(file, index) in files"
-          :key="index"
-        >
+        <div class="btn-danger" v-for="(file, index) in files" :key="index">
           {{ file.name }}
           <button class="btn btn-danger" @click="removeFiles(index)">
             Remove
           </button>
         </div>
-        <button
-          type="button"
-          @click="addFiles"
-          class="large-12 medium-12 small-12 cell"
-        >
-          Add files
-        </button>
-        &nbsp;
         <div class="large-12 medium-12 small-12 cell">
-          <button type="submit">Создать</button>
+          <button
+            type="button"
+            @click="addFiles"
+            class="btn btn-dark btn-md btn-block pb-10"
+          >
+            Add files
+          </button>
+          &nbsp;
+          <button type="submit" class="btn btn-dark btn-md btn-block">
+            Создать
+          </button>
         </div>
       </div>
     </div>
@@ -123,3 +121,8 @@ export default {
   },
 };
 </script>
+<style>
+.btn.btn-danger {
+  margin-left: 50px;
+}
+</style>

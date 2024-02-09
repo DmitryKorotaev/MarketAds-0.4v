@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-      <img :src="image + baseUrl" alt="image" class="img-fluid" />
+      <img :src="baseUrl + image" alt="image" class="img-fluid" />
       <a href="#!">
         <div
           class="mask"
@@ -25,27 +25,21 @@
 <script>
 export default {
   props: {
-    adds: Object,
+    ads: Object,
   },
-  computed: {
-    title() {
-      return this.adds.title;
-    },
-    description() {
-      return this.adds.description;
-    },
-    id() {
-      return this.adds.ID;
-    },
-    image() {
-      return this.adds.image[0];
-    },
-    baseUrl() {
-      return "http://localhost:4000";
-    },
-    index() {
-      return 0;
-    },
+
+  data() {
+    return {
+      title: this.ads.title,
+      description: this.ads.description,
+      id: this.ads.ID,
+      image: this.ads.image[0],
+      baseUrl: "http://localhost:4000/",
+      index: 0,
+    };
+  },
+  mounted() {
+    console.log(this.ads, "adds: Object");
   },
 };
 </script>

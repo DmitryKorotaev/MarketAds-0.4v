@@ -3,16 +3,14 @@
     <div class="container-fluid">
       <!-- <a class="navbar-brand"><img src="@/img/8UEdOr9L78U.jpg" alt="Market Ads" width="90" height="40"></a> -->
       <div class="indent">
-        <button class="btn btn-outline-success" type="button" @click="logOut">
+        <button class="btn btn-outline-secondary" type="button" @click="logOut">
           {{ login }}
         </button>
         <!-- переделать отклик размещения объявления -->
-        <router-link to="/Creating-ads" class="text-decoration-none link-light"
+        <router-link to="/Creating-ads" class="link-light"
           >Разместить объявление</router-link
         >
-        <router-link to="/" class="nav-link active">
-          Мои объявления
-        </router-link>
+        <router-link to="/" class="link-light"> Мои объявления </router-link>
       </div>
     </div>
   </nav>
@@ -51,5 +49,9 @@ export default {
 }
 .navbar {
   min-width: 900px;
+}
+.link-light {
+  color: beige;
+  text-decoration: none;
 }
 </style>

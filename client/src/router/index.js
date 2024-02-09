@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import guest from "./middleware/guest";
 import auth from "./middleware/auth";
-import ads from "@/views/Ads.vue";
+// import pageAds from "@/views/pageAds.vue";
 import Login from "@/views/Login.vue";
 
 Vue.use(VueRouter);
@@ -49,13 +49,13 @@ const routes = [
     meta: { layout: "empty", middlewhare: [auth] },
     component: () => import("@/views/Creating-ads.vue"),
   },
-  {
-    path: "/:id",
-    name: "id",
-    props: true,
-    meta: { layout: "main", middlewhare: [auth] },
-    component: ads,
-  },
+  // {
+  //   path: "/:id",
+  //   name: "id",
+  //   props: true,
+  //   meta: { layout: "main", middlewhare: [auth] },
+  //   component: pageAds,
+  // },
 ];
 
 const router = new VueRouter({

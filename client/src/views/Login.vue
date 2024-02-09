@@ -61,7 +61,7 @@
         </span>
       </div>
 
-      <div class="pt-1 mb-4 mt-5 d-flex justify-content-center">
+      <div class="pt-1 mb-4 mt-4 d-flex justify-content-center">
         <button class="btn btn-dark btn-lg btn-block" type="submit">
           Войти
         </button>
@@ -116,7 +116,7 @@ export default {
 <style>
 .form2 {
   width: 400px;
-  margin: 0 auto;
+  height: 500px;
 }
 
 .mb-5.pb-lg-2 {

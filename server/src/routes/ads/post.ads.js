@@ -1,18 +1,19 @@
 const { Router, application } = require("express");
-const Ads = require("../../models/Ads");
+const Ads = require("../../models/ads");
 const multer = require("multer");
-path = require("path");
+// path = require("path");
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
-  },
-});
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   },
+// });
 
-var upload = multer({ storage: storage });
+// var upload = multer({ storage: storage });
+const upload = multer({ dest: "uploads/" });
 const router = Router();
 
 INTERNAL_SERVER_ERROR = 500;
@@ -32,11 +33,12 @@ router.post("/add", upload.array("files"), async (req, res) => {
     if (!req.body) {
       return res.status(BAD_REQUEST).json({ message: "invalid body....." });
     }
-    const filename = [];
+    const filename = new Array();
     for (let i = 0; i < req.files.length; i++) {
       filename.push(req.files[i].filename);
     }
     const options = new Object(req.body);
+    console.log(options);
     options.filename = filename;
     ads = new Ads(options);
     newAds = await ads.createAds();
@@ -52,12 +54,12 @@ router.post("/add", upload.array("files"), async (req, res) => {
 });
 // /api/post/all
 router.get("/all", async (req, res) => {
-  const options = new Object(req.body);
+  const options = new Object();
   ads = new Ads(options);
-  allAds = await ads.all();
-  console.log(allAds, "allAds");
-  if (allAds) {
-    return res.status(200).json(allAds);
+  adds = await ads.all();
+  console.log(adds, "adds");
+  if (!checkObj(adds)) {
+    return res.status(200).json(adds);
   } else {
     return res.status(BAD_REQUEST).json({ message: "error get all" });
   }

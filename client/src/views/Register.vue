@@ -1,6 +1,6 @@
 <template>
   <form class="form1" @submit.prevent="submitHandler">
-    <div class="d-flex justify-content-center mb-3 pb-1">
+    <div class="d-flex justify-content-center">
       <i class="fas fa-cubes fa-2x me-3"></i>
     </div>
 
@@ -142,8 +142,8 @@
       >
     </div>
 
-    <div class="pt-2 mb-2 d-flex justify-content-center">
-      <button class="mb-2 pb-3 mt-4 btn btn-dark btn-md" type="submit">
+    <div class="pt-1 mb-1 d-flex justify-content-center">
+      <button class="pb-3 mt-3 btn btn-dark btn-md" type="submit">
         Зарегистрироваться
       </button>
     </div>
@@ -230,6 +230,7 @@ export default {
 <style>
 .form1 {
   width: 400px;
+  height: 570px;
   margin: 0 auto;
 }
 
