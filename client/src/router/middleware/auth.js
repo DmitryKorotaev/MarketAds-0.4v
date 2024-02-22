@@ -1,7 +1,7 @@
 export default function auth({ next }) {
-  if (!localStorage.getItem("login")) {
+  if (!localStorage.getItem("Login")) {
     return next({
-      name: "login",
+      path: "/Login",
     });
   }
   return next();

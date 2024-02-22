@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="col-md-6">
+    <div class="col-md-6" v-if="adds.length > 0">
       <div class="inline" id="con1">
         <select id="inputState" class="form-select" v-model="selection">
           <option :value="{ value: 'other' }" selected>other</option>
@@ -26,16 +26,16 @@
           найти
         </button>
       </div>
+      <li class="list-group" v-for="(ads, idx) in adds" :key="idx">
+        <ads :ads="ads" />
+      </li>
     </div>
-    <li class="list-group" v-if="adds.length > 0" v-for="ads in adds">
-      <ads :ads="ads" />
-    </li>
-    <!-- <span v-else >Массив adds пустой</span> -->
+    <span class="centered" v-else>объявлений пока нет.</span>
   </div>
 </template>
 
 <script>
-import ads from "@/views/Ads.vue";
+import ads from "@/components/Ads.vue";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -47,10 +47,10 @@ export default {
     searchInput: "",
   }),
   mounted() {
-    this.$store.dispatch("post/all");
+    this.$store.dispatch("ads/all");
   },
   computed: {
-    ...mapGetters("post", ["adds"]),
+    ...mapGetters("ads", ["adds"]),
   },
 
   methods: {
@@ -136,5 +136,11 @@ export default {
   border: 1px solid #ccc;
   border-radius: 5px;
   max-width: 500px;
+}
+.centered {
+  width: 100%;
+  position: fixed;
+  top: 50%;
+  left: 45%;
 }
 </style>

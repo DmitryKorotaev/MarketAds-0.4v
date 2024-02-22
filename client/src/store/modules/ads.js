@@ -1,6 +1,5 @@
 import router from "@/router";
 import axios from "axios";
-import { watch } from "vue";
 
 export default {
   namespaced: true,
@@ -32,15 +31,14 @@ export default {
         const f = new FormData();
         for (let i = 0; i < options.files.length; i++) {
           let file = options.files[i];
-
           f.append("files", file);
-          f.append("id", state.id);
-          f.append("title", options.title);
-          f.append("description", options.description);
-          f.append("category", options.category);
         }
+        f.append("id", state.id);
+        f.append("title", options.title);
+        f.append("description", options.description);
+        f.append("category", options.category);
 
-        const res = await axios.post("/api/post/add", f, {
+        const res = await axios.post("/api/ads/add", f, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -64,7 +62,7 @@ export default {
     },
     async all({ commit }) {
       try {
-        const res = await axios.get("api/post/all");
+        const res = await axios.get("api/ads/all");
         if (res.data) {
           commit("allAds", res.data);
           console.log(res.data, "res.data");
@@ -73,6 +71,17 @@ export default {
         }
       } catch (error) {
         return error;
+      }
+    },
+    async myAds(context, data) {
+      try {
+        const res = await axios.get(`api/ads/myAds/${data.id}`);
+        if (res.status == 200) {
+          console.log(res.data, "myAds");
+          return res.data;
+        }
+      } catch (error) {
+        error;
       }
     },
   },

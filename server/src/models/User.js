@@ -75,11 +75,11 @@ class User {
       }
 
       const token = jwt.sign(
-        { userId: candidate[0].ID, expiresIn: "1h" },
+        { userId: candidate[0].id, expiresIn: "1h" },
         config.get("jwtSecret")
       );
       //console.log(token);
-      return { userId: candidate[0].ID, token };
+      return { userId: candidate[0].id, token };
     } catch (error) {
       console.log(` Что-то пошло не так `);
       return new Object();

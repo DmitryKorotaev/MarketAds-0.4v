@@ -6,11 +6,14 @@
         <button class="btn btn-outline-secondary" type="button" @click="logOut">
           {{ login }}
         </button>
-        <!-- переделать отклик размещения объявления -->
+        <router-link to="/" class="link-light">главная </router-link>
+
         <router-link to="/Creating-ads" class="link-light"
           >Разместить объявление</router-link
         >
-        <router-link to="/" class="link-light"> Мои объявления </router-link>
+        <router-link to="/MyAds" class="link-light">
+          Мои объявления
+        </router-link>
       </div>
     </div>
   </nav>

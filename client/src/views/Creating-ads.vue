@@ -41,8 +41,7 @@
               ref="files"
               @change="handleFileUpload()"
               multiple
-              accept="application/x-zip-compressed,image/*"
-              class="invisible"
+              accept="image/*"
             />
           </div>
         </form>
@@ -99,7 +98,7 @@ export default {
       //   let file = this.files[i];
       //   console.log(formData.append("files", file));
       // }
-      this.$store.dispatch("post/create", options);
+      this.$store.dispatch("ads/create", options);
       this.title = this.selected = this.description = "";
       this.files = [];
     },

@@ -1,24 +1,25 @@
 const { Router, application } = require("express");
-const Ads = require("../../models/ads");
+const Ads = require("../../models/Ads");
 const multer = require("multer");
-// path = require("path");
+path = require("path");
 
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads/");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
 
-// var upload = multer({ storage: storage });
-const upload = multer({ dest: "uploads/" });
+var upload = multer({ storage: storage });
+
 const router = Router();
 
 INTERNAL_SERVER_ERROR = 500;
 const BAD_REQUEST = 400;
 const CREATED = 201;
+const OK = 200;
 
 function checkObj(obj) {
   for (key in obj) {
@@ -27,7 +28,7 @@ function checkObj(obj) {
   return true;
 }
 
-// /api/post/add
+// /api/ads/add
 router.post("/add", upload.array("files"), async (req, res) => {
   try {
     if (!req.body) {
@@ -38,10 +39,10 @@ router.post("/add", upload.array("files"), async (req, res) => {
       filename.push(req.files[i].filename);
     }
     const options = new Object(req.body);
-    console.log(options);
+    console.log(options, "options /add");
     options.filename = filename;
-    ads = new Ads(options);
-    newAds = await ads.createAds();
+    const ads = new Ads(options);
+    const newAds = await ads.createAds();
     if (!checkObj(newAds)) {
       return res.status(CREATED).json(newAds);
     } else {
@@ -52,19 +53,19 @@ router.post("/add", upload.array("files"), async (req, res) => {
     console.log("Что-то пошло не так");
   }
 });
-// /api/post/all
+// /api/ads/all
 router.get("/all", async (req, res) => {
   const options = new Object();
-  ads = new Ads(options);
-  adds = await ads.all();
-  console.log(adds, "adds");
+  const ads = new Ads(options);
+  const adds = await ads.all();
+  console.log(adds, "adds запрос на все объявления");
   if (!checkObj(adds)) {
-    return res.status(200).json(adds);
+    return res.status(OK).json(adds);
   } else {
     return res.status(BAD_REQUEST).json({ message: "error get all" });
   }
 });
-// /api/post/all/:id
+// /api/ads/all/:id
 router.get("/all/:id", async (req, res) => {
   try {
     const options = {
@@ -73,7 +74,7 @@ router.get("/all/:id", async (req, res) => {
     const ads = new Ads(options);
     const current = await ads.currentAds();
     if (current.length) {
-      return res.status(200).json(current);
+      return res.status(OK).json(current);
     } else {
       return res.status(BAD_REQUEST).json({ message: "ads doesnt exist...." });
     }
@@ -81,6 +82,26 @@ router.get("/all/:id", async (req, res) => {
     return (
       res.status(INTERNAL_SERVER_ERROR).json({ message: error.message }),
       console.log("ошибка в запросе all/:id")
+    );
+  }
+});
+//api/ads/myAds/:id
+router.get("myAds/:id", async (req, res) => {
+  try {
+    const options = {
+      useId: req.params.id,
+    };
+    const ads = new Ads(options);
+    const myAds = await ads.myAds();
+    if (myAds.length) {
+      return res.status(OK).json(myAds);
+    } else {
+      return res.status(BAD_REQUEST).json({ message: "ads doesnt exist...." });
+    }
+  } catch (error) {
+    return (
+      res.status(INTERNAL_SERVER_ERROR).json({ message: error.message }),
+      console.log("ошибка в запросе myAds")
     );
   }
 });

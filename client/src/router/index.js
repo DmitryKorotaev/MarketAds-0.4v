@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 import guest from "./middleware/guest";
 import auth from "./middleware/auth";
 // import pageAds from "@/views/pageAds.vue";
-import Login from "@/views/Login.vue";
 
 Vue.use(VueRouter);
 
@@ -22,7 +21,7 @@ const routes = [
   {
     path: "/",
     name: "all",
-    meta: { layout: "main", middlewhare: [auth] },
+    meta: { layout: "main" },
     component: () => import("@/views/all.vue"),
   },
 
@@ -38,24 +37,30 @@ const routes = [
     name: "Login",
     meta: {
       layout: "empty",
-      middlewhare: [guest],
+      middleware: [guest, auth],
     },
-    component: Login,
+    component: () => import("@/views/Login.vue"),
   },
 
   {
     path: "/Creating-ads",
     name: "Creating-ads",
-    meta: { layout: "empty", middlewhare: [auth] },
+    meta: { layout: "empty", middleware: [auth] },
     component: () => import("@/views/Creating-ads.vue"),
   },
-  // {
-  //   path: "/:id",
-  //   name: "id",
-  //   props: true,
-  //   meta: { layout: "main", middlewhare: [auth] },
-  //   component: pageAds,
-  // },
+  {
+    path: "/:id",
+    name: "id",
+    props: true,
+    meta: { layout: "main", middleware: [auth] },
+    component: () => import("@/views/AdsPage.vue"),
+  },
+  {
+    path: "/MyAds",
+    name: "MyAds",
+    meta: { layout: "main", middleware: [auth] },
+    component: () => import("@/views/MyAds.vue"),
+  },
 ];
 
 const router = new VueRouter({

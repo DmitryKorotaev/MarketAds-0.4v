@@ -10,7 +10,7 @@ const PORT = config.get("port") || 4000;
 
 app.use("/api/auth", require("./routes/auth/register.routes"));
 app.use("/api/auth", require("./routes/auth/login.routes"));
-app.use("/api/post", require("./routes/ads/post.ads"));
+app.use("/api/ads", require("./routes/ads/ads"));
 app.listen(PORT, () => {
   console.log(`Server has been started on port ${PORT}... `);
 });

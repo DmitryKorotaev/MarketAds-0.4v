@@ -46,7 +46,7 @@ export default {
     },
 
     async logout({ commit }) {
-      console.log(this.logout, "logOut");
+      // console.log(logout, "logOut");
       if (localStorage.getItem("Login")) {
         commit("changeAuth");
         localStorage.removeItem("Login");
