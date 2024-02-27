@@ -33,18 +33,16 @@
       </div>
 
       <div class="container">
-        <form enctype="multipart/form-data" action="/upload" method="POST">
-          <hr />
-          <div class="large-12 medium-12 small-12 cell">
-            <input
-              type="file"
-              ref="files"
-              @change="handleFileUpload()"
-              multiple
-              accept="image/*"
-            />
-          </div>
-        </form>
+        <hr />
+        <div class="large-12 medium-12 small-12 cell">
+          <input
+            type="file"
+            ref="files"
+            @change="handleFileUpload()"
+            multiple
+            accept="image/*"
+          />
+        </div>
 
         <br />
         <div class="btn-danger" v-for="(file, index) in files" :key="index">

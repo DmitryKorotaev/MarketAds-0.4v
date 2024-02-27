@@ -10,7 +10,7 @@ class Ads {
       const categories = await db.query(
         `SELECT * FROM category WHERE category="${this.options.category}"`
       );
-      const categoryId = categories[0].id;
+      const categoryId = categories[0].ID;
       await db.query(
         `INSERT INTO ads SET 
         userId="${this.options.id}",
@@ -48,7 +48,7 @@ class Ads {
       );
       adds[0].image = JSON.parse(adds[0].image);
       const user = await db.query(
-        `SELECT email FROM  users WHERE ID= "${adds[0].userId}"`
+        `SELECT email FROM  users WHERE id= "${adds[0].userId}"`
       );
       if (adds.length) {
         adds.push(user[0]);
@@ -89,12 +89,36 @@ class Ads {
   async update() {
     try {
       const category = await db.query(
-        `SELECT ID FROM category WHERE category= "${this.options.category}"`
+        `SELECT id FROM category WHERE category= "${this.options.category}"`
       );
       const files = JSON.stringify(this.options.filename);
-      const adds = await db.query(`UPDATE ads SET `);
+      const adds = await db.query(`UPDATE ads SET 
+          userId ="${this.options.userId}",
+          title= "${this.options.title}",
+          description = "${this.options.description}",
+          category = "${category[0].ID}"
+          image= ? WHERE ID = "${this.options.ID}", [files]`);
+      return adds;
     } catch (error) {
       return new Array();
+    }
+  }
+  async search() {
+    try {
+      const category = await db.query(
+        `SELECT id FROM category WHERE category= "${this.options.selector}"`
+      );
+      const adds = await db.query(
+        `SELECT * FROM ads WHERE category= "${category[0].ID}" AND
+         (title LIKE "%${this.options.input}%" OR 
+         description LIKE "%${this.options.input}%")`
+      );
+      for (let i = 0; i < adds.length; i++) {
+        adds[i].image = JSON.parse(adds[i].image);
+      }
+      return adds;
+    } catch (error) {
+      return false;
     }
   }
 }

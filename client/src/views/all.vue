@@ -26,6 +26,7 @@
           найти
         </button>
       </div>
+
       <li class="list-group" v-for="(ads, idx) in adds" :key="idx">
         <ads :ads="ads" />
       </li>
@@ -97,6 +98,9 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+.col-md-4 {
+  margin-right: 10px;
+}
 
 .inline {
   display: flex;
@@ -130,13 +134,6 @@ export default {
   margin-top: 2em;
 }
 
-.ads {
-  margin: 1em;
-  padding: 1em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  max-width: 500px;
-}
 .centered {
   width: 100%;
   position: fixed;

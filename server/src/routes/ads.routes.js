@@ -1,19 +1,19 @@
 const { Router, application } = require("express");
-const Ads = require("../../models/Ads");
+const Ads = require("../models/Ads");
 const multer = require("multer");
-path = require("path");
+// path = require("path");
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   },
+// });
 
-var upload = multer({ storage: storage });
-
+// var upload = multer({ storage: storage });
+const upload = multer({ dest: "public/uploads/" });
 const router = Router();
 
 INTERNAL_SERVER_ERROR = 500;
@@ -85,9 +85,14 @@ router.get("/all/:id", async (req, res) => {
     );
   }
 });
-//api/ads/myAds/:id
+//  /api/ads/myAds/:id
 router.get("myAds/:id", async (req, res) => {
   try {
+    if (!req.params.id) {
+      return res
+        .status(BAD_REQUEST)
+        .json({ message: "необходимо авторизироваться!" });
+    }
     const options = {
       useId: req.params.id,
     };
@@ -101,7 +106,28 @@ router.get("myAds/:id", async (req, res) => {
   } catch (error) {
     return (
       res.status(INTERNAL_SERVER_ERROR).json({ message: error.message }),
-      console.log("ошибка в запросе myAds")
+      console.log("error in MyAds request")
+    );
+  }
+});
+// /api/ads/myAds/update
+router.post("myAds/update", async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(BAD_REQUEST).json({ message: "There are no ads" });
+    }
+    const options = new Object(req.body);
+    const ads = new Ads(options);
+    const update = await ads.update();
+    if (update == undefined) {
+      return res
+        .status(BAD_REQUEST)
+        .json({ message: "error updating the ads" });
+    }
+  } catch (error) {
+    return (
+      res.status(INTERNAL_SERVER_ERROR).json({ message: error.message }),
+      console.log("error in uploads request")
     );
   }
 });

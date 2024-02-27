@@ -1,7 +1,8 @@
 <template>
   <div class="card">
-    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-      <img :src="baseUrl + image" alt="image" class="img-fluid" />
+    <div class="row"></div>
+    <div class="bg-image hover-overlay ripple">
+      <img :src="baseUrl + image" alt="image" class="img-thumbnail" />
       <a href="#!">
         <div
           class="mask"
@@ -12,12 +13,8 @@
     <div class="card-body">
       <h5 class="card-title">{{ title }}</h5>
       <router-link :to="{ name: 'id', params: { id } }"
-        ><h5 class="btn btn-info link">About</h5>
+        ><h5 class="btn btn-dark btn-md btn-block mt-1">About</h5>
       </router-link>
-      <!-- <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
-      </p> -->
     </div>
   </div>
 </template>
@@ -34,7 +31,7 @@ export default {
       description: this.ads.description,
       id: this.ads.ID,
       image: this.ads.image[0],
-      baseUrl: "http://localhost:4000/",
+      baseUrl: "http://localhost:4000/uploads/",
       index: 0,
     };
   },
@@ -45,12 +42,8 @@ export default {
 </script>
 <style>
 .card {
-  margin-top: 30px;
+  margin-top: 35px;
   width: 250px;
-}
-
-.card-text {
-  font-size: 14px;
-  position: relative;
+  height: 430px;
 }
 </style>
