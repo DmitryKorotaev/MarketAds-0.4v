@@ -1,19 +1,19 @@
 const { Router, application } = require("express");
 const Ads = require("../models/Ads");
 const multer = require("multer");
-// path = require("path");
+path = require("path");
 
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads/");
-//   },
-//   filename: function (req, file, cb) {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+});
 
-// var upload = multer({ storage: storage });
-const upload = multer({ dest: "public/uploads/" });
+var upload = multer({ storage: storage });
+
 const router = Router();
 
 INTERNAL_SERVER_ERROR = 500;
@@ -39,7 +39,7 @@ router.post("/add", upload.array("files"), async (req, res) => {
       filename.push(req.files[i].filename);
     }
     const options = new Object(req.body);
-    console.log(options, "options /add");
+    //console.log(options, "options /add");
     options.filename = filename;
     const ads = new Ads(options);
     const newAds = await ads.createAds();
@@ -58,7 +58,7 @@ router.get("/all", async (req, res) => {
   const options = new Object();
   const ads = new Ads(options);
   const adds = await ads.all();
-  console.log(adds, "adds запрос на все объявления");
+  //console.log(adds, "adds запрос на все объявления");
   if (!checkObj(adds)) {
     return res.status(OK).json(adds);
   } else {
@@ -86,18 +86,21 @@ router.get("/all/:id", async (req, res) => {
   }
 });
 //  /api/ads/myAds/:id
-router.get("myAds/:id", async (req, res) => {
+router.get("/myAds/:id", async (req, res) => {
   try {
     if (!req.params.id) {
       return res
         .status(BAD_REQUEST)
         .json({ message: "необходимо авторизироваться!" });
     }
+    //console.log(req.params.id, "userId из req.params.id, routes ads");
     const options = {
-      useId: req.params.id,
+      userId: req.params.id,
     };
+    //console.log("myAds routes");
     const ads = new Ads(options);
     const myAds = await ads.myAds();
+    //console.log(myAds, "myAds in ads routes");
     if (myAds.length) {
       return res.status(OK).json(myAds);
     } else {
@@ -111,18 +114,21 @@ router.get("myAds/:id", async (req, res) => {
   }
 });
 // /api/ads/myAds/update
-router.post("myAds/update", async (req, res) => {
+router.post("/myAds/update", async (req, res) => {
   try {
+    console.log(req.body, "req.body routes update");
     if (!req.body) {
       return res.status(BAD_REQUEST).json({ message: "There are no ads" });
     }
     const options = new Object(req.body);
     const ads = new Ads(options);
-    const update = await ads.update();
-    if (update == undefined) {
+    const update = await ads.updateAds();
+    if (update === undefined) {
       return res
         .status(BAD_REQUEST)
-        .json({ message: "error updating the ads" });
+        .json({ message: "error updating the ads!!" });
+    } else {
+      return res.status(OK).json(update);
     }
   } catch (error) {
     return (
@@ -131,4 +137,47 @@ router.post("myAds/update", async (req, res) => {
     );
   }
 });
+// /api/ads/myAds/delete
+
+router.post("/myAds/delete", async (req, res) => {
+  try {
+    if (!req.body) {
+      return res
+        .status(BAD_REQUEST)
+        .json({ message: "There is no such announcement" });
+    }
+    const options = new Object(req.body);
+    const ads = new Ads(options);
+    const del = ads.deleteAds();
+    //console.log(del, "delete ads routes");
+    if (del === undefined) {
+      return res
+        .status(BAD_REQUEST)
+        .json({ message: "There is no such announcement" });
+    } else {
+      return res.status(OK).json({ message: "ads has been deleted!" });
+    }
+  } catch (error) {
+    return (
+      res.status(INTERNAL_SERVER_ERROR).json({ message: error.message }),
+      console.log("error in delete request")
+    );
+  }
+});
+
+// api/ads/search
+router.post("/search", async (req, res) => {
+  try {
+    if (!req.body) {
+      return res.status(BAD_REQUEST).json({ message: "enter the data" });
+    }
+    const options = new Object(req.body);
+    const ads = new Ads(options);
+    const search = await ads.searchAds();
+    return res.status(CREATED).json(search);
+  } catch {
+    return res.status(BAD_REQUEST).json({ message: error.message });
+  }
+});
+
 module.exports = router;

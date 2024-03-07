@@ -10,7 +10,7 @@ class Ads {
       const categories = await db.query(
         `SELECT * FROM category WHERE category="${this.options.category}"`
       );
-      const categoryId = categories[0].ID;
+      const categoryId = categories[0].id;
       await db.query(
         `INSERT INTO ads SET 
         userId="${this.options.id}",
@@ -21,7 +21,7 @@ class Ads {
         [files]
       );
       const adds = this.options;
-      console.log(adds, "adds созание объявления");
+      //console.log(adds, "adds созание объявления");
       return adds;
     } catch (error) {
       return new Object();
@@ -35,7 +35,7 @@ class Ads {
       for (let i = 0; i < adds.length; i++) {
         adds[i].image = JSON.parse(adds[i].image);
       }
-      console.log(adds, "adds все объявления");
+      //console.log(adds, "adds все объявления");
       return adds;
     } catch (error) {
       return false, console.log("error method all");
@@ -64,13 +64,16 @@ class Ads {
         `SELECT * FROM ads WHERE userId = "${this.options.userId}"`
       );
       for (let i = 0; i < adds.length; i++) {
-        adds[i].image = JSON.parse(adds[i].image);
-
-        if (adds.length) {
-          return adds;
-        } else {
-          return new Array();
+        if (typeof adds[i].image === "string") {
+          adds[i].image = JSON.parse(adds[i].image);
         }
+      }
+
+      if (adds.length) {
+        //console.log(adds, "adds все мои объявления из models Ads.js");
+        return adds;
+      } else {
+        return new Array();
       }
     } catch (error) {
       return new Array();
@@ -81,29 +84,35 @@ class Ads {
       const res = await db.query(
         `DELETE FROM ads WHERE ID="${this.options.ID}"`
       );
+      //console.log(res, "delete myads model ads");
       return res;
     } catch (error) {
       return new Object();
     }
   }
-  async update() {
+  async updateAds() {
     try {
       const category = await db.query(
         `SELECT id FROM category WHERE category= "${this.options.category}"`
       );
+      // const categoryId = category[0].id;
       const files = JSON.stringify(this.options.filename);
-      const adds = await db.query(`UPDATE ads SET 
+      const adds = await db.query(
+        `UPDATE ads SET 
           userId ="${this.options.userId}",
           title= "${this.options.title}",
           description = "${this.options.description}",
-          category = "${category[0].ID}"
-          image= ? WHERE ID = "${this.options.ID}", [files]`);
+          category = "${category[0].id}",
+          image= ? WHERE ID = "${this.options.ID}" `,
+        [files]
+      );
+      //console.log(adds, "adds models update");
       return adds;
     } catch (error) {
       return new Array();
     }
   }
-  async search() {
+  async searchAds() {
     try {
       const category = await db.query(
         `SELECT id FROM category WHERE category= "${this.options.selector}"`

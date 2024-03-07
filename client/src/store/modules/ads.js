@@ -5,9 +5,10 @@ export default {
   namespaced: true,
   state() {
     return {
-      isCreate: false,
       id: localStorage.getItem("id"),
+      isCreate: false,
       adds: [],
+      myAds: [],
     };
   },
 
@@ -22,7 +23,11 @@ export default {
     },
     allAds(state, adds) {
       state.adds = adds;
-      console.log(adds, "adds");
+      console.log(adds, " store mutations adds");
+    },
+    myAds(state, myAds) {
+      state.myAds = myAds;
+      comsole.log(myAds, "store mutations myAds");
     },
   },
   actions: {
@@ -62,10 +67,10 @@ export default {
     },
     async all({ commit }) {
       try {
-        const res = await axios.get("api/ads/all");
+        const res = await axios.get("/api/ads/all");
         if (res.data) {
           commit("allAds", res.data);
-          console.log(res.data, "res.data");
+          console.log(res.data, " store actions res.data");
         } else {
           res.status == 404;
         }
@@ -73,19 +78,87 @@ export default {
         return error;
       }
     },
-    async myAds(context, data) {
+    // async myAds(context, data) {
+    //   try {
+    //     const res = await axios.get(`/api/ads/myAds/${data.id}`);
+    //     if (res.status == 200) {
+    //       console.log(res.data, " store actions myAds");
+    //       return res.data;
+    //     }
+    //   } catch (error) {
+    //     error;
+    //   }
+    // },
+    // async deleteAds(context, data) {
+    //   try {
+    //     const res = await axios.post(`/api/ads/myAds/delete`, data);
+    //     if (res.status == 200) {
+    //       console.log(res.data, "store actions deleteAds");
+    //       console.log("the ad has been deleted!!");
+    //       return res.data;
+    //     } else {
+    //       console.log("error deleting ads" + res.status);
+    //     }
+    //   } catch (error) {
+    //     return error;
+    //   }
+    // },
+    // async updateAds(context, data) {
+    //   try {
+    //     const res = await axios.post("/api/ads/myAds/update", data);
+    //     if (res.status == 200) {
+    //       console.log("ads updated successfully");
+    //     } else {
+    //       console.log("Error updating post...");
+    //     }
+    //   } catch (error) {
+    //     return error;
+    //   }
+    // },
+    async getMyAds({ commit }, data) {
       try {
-        const res = await axios.get(`api/ads/myAds/${data.id}`);
+        const res = await axios.get(`/api/ads/myAds/${data.id}`);
         if (res.status == 200) {
-          console.log(res.data, "myAds");
-          return res.data;
+          commit("myAds", res.data);
+        } else {
+          res.status == 404;
         }
       } catch (error) {
         error;
       }
     },
+
+    async deleteAds({ commit }, data) {
+      try {
+        const res = await axios.post("/api/ads/myAds/delete", data);
+        if (res.status == 200) {
+          //console.log(res.data, "store actions deleteAds");
+          console.log("the ad has been deleted!!");
+          commit("myAds", res.data);
+        } else {
+          console.log("error deleting ads" + res.status);
+        }
+      } catch (error) {
+        return error;
+      }
+    },
+    async updateAds({ commit }, data) {
+      try {
+        console.log(data, "actions adsUpdate data");
+        const res = await axios.post("/api/ads/myAds/update", data);
+        if (res.status == 200) {
+          console.log(res.data, "store actions updataAds");
+          commit("myAds", res.data);
+        } else {
+          console.log("error update ads" + res.status);
+        }
+      } catch (error) {
+        return error;
+      }
+    },
   },
   getters: {
     adds: (state) => state.adds,
+    myAds: (state) => state.myAds,
   },
 };
