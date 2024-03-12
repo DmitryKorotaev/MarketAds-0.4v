@@ -1,7 +1,10 @@
 <template>
   <div class="card">
     <div class="row"></div>
-    <div class="bg-image hover-overlay ripple">
+    <div
+      class="bg-image hover-overlay ripple"
+      v-if="baseUrl.length > 0 && image"
+    >
       <img :src="baseUrl + image" alt="image" class="img-thumbnail" />
       <a href="#!">
         <div
@@ -27,15 +30,24 @@ export default {
 
   data() {
     return {
-      title: this.ads.title,
-      description: this.ads.description,
-      id: this.ads.ID,
-      image: this.ads.image[0],
+      title: "",
+      description: "",
+      id: "",
+      image: "",
       baseUrl: "http://localhost:4000/uploads/",
       index: 0,
     };
   },
+  //Property or method "image" is not defined on the instance but referenced during render. Make sure that this property is reactive, either in the data option, or for class-based components, by initializing the property.
+  //ads.js:25 TypeError: Cannot read properties of null (reading '0')
+  //[Vue warn]: Error in mounted hook: "TypeError: Cannot read properties of null (reading '0')"
+  //решение ошибок :
   mounted() {
+    this.title = this.ads.title || "";
+    this.description = this.ads.description || "";
+    this.id = this.ads.ID || "";
+    this.image =
+      this.ads.image && this.ads.image.length > 0 ? this.ads.image[0] : "";
     console.log(this.ads, "adds: Object");
   },
 };

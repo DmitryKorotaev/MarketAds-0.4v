@@ -48,17 +48,17 @@ const routes = [
     meta: { layout: "empty", middleware: [auth] },
     component: () => import("@/views/Creating-ads.vue"),
   },
-  // {
-  //   path: "/:id",
-  //   name: "id",
-  //   props: true,
-  //   meta: { layout: "main", middleware: [auth] },
-  //   component: () => import("@/views/AdsPage.vue"),
-  // },
+  {
+    path: "/all/:id",
+    name: "id",
+    props: true,
+    meta: { layout: "main", middleware: [auth] },
+    component: () => import("@/views/AdsPage.vue"),
+  },
   {
     path: "/MyAds",
     name: "MyAds",
-    meta: { layout: "main" },
+    meta: { layout: "main", middleware: [auth] },
     component: () => import("@/views/MyAds.vue"),
   },
 ];

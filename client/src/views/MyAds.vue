@@ -77,6 +77,7 @@ export default {
     selected: "",
     isChange: false,
   }),
+
   computed: {
     toChange: function () {
       return this.isChange ? "сохранить" : "редактировать";

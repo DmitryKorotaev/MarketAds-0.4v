@@ -72,7 +72,9 @@ router.get("/all/:id", async (req, res) => {
       id: req.params.id,
     };
     const ads = new Ads(options);
+    console.log(ads, "ads, router/all/:id");
     const current = await ads.currentAds();
+    console.log(current, "current  routes: all/:id");
     if (current.length) {
       return res.status(OK).json(current);
     } else {

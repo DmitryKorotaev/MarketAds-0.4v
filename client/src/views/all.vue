@@ -48,7 +48,7 @@ export default {
     searchInput: "",
   }),
   mounted() {
-    this.$store.dispatch("ads/all");
+    this.$store.dispatch("ads/getAllAds");
   },
   computed: {
     ...mapGetters("ads", ["adds"]),

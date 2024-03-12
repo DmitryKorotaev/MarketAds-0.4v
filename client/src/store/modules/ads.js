@@ -65,7 +65,7 @@ export default {
         return error;
       }
     },
-    async all({ commit }) {
+    async getAllAds({ commit }) {
       try {
         const res = await axios.get("/api/ads/all");
         if (res.data) {
@@ -73,6 +73,19 @@ export default {
           console.log(res.data, " store actions res.data");
         } else {
           res.status == 404;
+        }
+      } catch (error) {
+        return error;
+      }
+    },
+    async getAds(context, data) {
+      try {
+        console.log(data.adsId);
+        const res = await axios.get(`/api/ads/all/${data.adsId}`);
+        if (res.data) {
+          return res.data;
+        } else {
+          return res.status === 404;
         }
       } catch (error) {
         return error;

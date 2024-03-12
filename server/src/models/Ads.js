@@ -48,7 +48,7 @@ class Ads {
       );
       adds[0].image = JSON.parse(adds[0].image);
       const user = await db.query(
-        `SELECT email FROM  users WHERE id= "${adds[0].userId}"`
+        `SELECT numberPhone, name FROM  users WHERE id= "${adds[0].userId}"`
       );
       if (adds.length) {
         adds.push(user[0]);
