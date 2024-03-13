@@ -87,6 +87,7 @@ export default {
   mounted() {
     try {
       const id = localStorage.getItem("id");
+      console.log(id);
       if (id) {
         this.$store.dispatch("ads/getMyAds", { id });
       }
@@ -113,7 +114,9 @@ export default {
         category: category,
       });
       console.log(adds, "страница myAds метод Update ");
-      this.$store.dispatch("ads/updateAds", adds);
+      this.$store.dispatch("ads/updateAds", adds).then(() => {
+        this.$store.dispatch("ads/getMyAds", { id: this.userId });
+      });
     },
     onRemoveAds(index) {
       const adds = new Object({

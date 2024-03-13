@@ -78,11 +78,12 @@ export default {
         return error;
       }
     },
-    async getAds(context, data) {
+    async getAds({ commit }, data) {
       try {
         console.log(data.adsId);
         const res = await axios.get(`/api/ads/all/${data.adsId}`);
         if (res.data) {
+          commit("allAds", res.data);
           return res.data;
         } else {
           return res.status === 404;
@@ -155,7 +156,7 @@ export default {
         return error;
       }
     },
-    async updateAds({ commit }, data) {
+    async updateAds({ commit, dispatch }, data) {
       try {
         console.log(data, "actions adsUpdate data");
         const res = await axios.post("/api/ads/myAds/update", data);

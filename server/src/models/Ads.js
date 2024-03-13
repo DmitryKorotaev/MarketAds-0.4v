@@ -31,16 +31,27 @@ class Ads {
   async all() {
     try {
       const adds = await db.query(`SELECT * FROM ads`);
-
+      console.log(adds);
+      // for (let i = 0; i < adds.length; i++) {
+      //   adds[i].image = JSON.parse(adds[i].image);
+      // }
       for (let i = 0; i < adds.length; i++) {
-        adds[i].image = JSON.parse(adds[i].image);
+        try {
+          adds[i].image = JSON.parse(adds[i].image);
+        } catch (error) {
+          console.log("Error parsing JSON in row", i, error);
+          adds[i].image = {};
+        }
       }
-      //console.log(adds, "adds все объявления");
+      console.log(adds, "adds models все объявления");
+
       return adds;
     } catch (error) {
-      return false, console.log("error method all");
+      console.log("error method all", error);
+      return { error: "error fetching ads" };
     }
   }
+
   async currentAds() {
     try {
       const adds = await db.query(
@@ -63,9 +74,17 @@ class Ads {
       const adds = await db.query(
         `SELECT * FROM ads WHERE userId = "${this.options.userId}"`
       );
+      // for (let i = 0; i < adds.length; i++) {
+      //   if (typeof adds[i].image === "string") {
+      //     adds[i].image = JSON.parse(adds[i].image);
+      //   }
+      // }
       for (let i = 0; i < adds.length; i++) {
-        if (typeof adds[i].image === "string") {
+        try {
           adds[i].image = JSON.parse(adds[i].image);
+        } catch (error) {
+          console.log("Error parsing JSON in row", i, error);
+          adds[i].image = {};
         }
       }
 

@@ -58,8 +58,8 @@ router.get("/all", async (req, res) => {
   const options = new Object();
   const ads = new Ads(options);
   const adds = await ads.all();
-  //console.log(adds, "adds запрос на все объявления");
-  if (!checkObj(adds)) {
+  console.log(adds, "adds запрос на все объявления");
+  if (!checkObj(adds) || adds.error) {
     return res.status(OK).json(adds);
   } else {
     return res.status(BAD_REQUEST).json({ message: "error get all" });
