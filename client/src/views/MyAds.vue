@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div v-if="myAds.length > 0">
+    <ul v-if="myAds.length > 0">
       <li class="card" v-for="(adds, index) in myAds" :key="adds.id">
         <h5 class="title" v-if="isChange === false">{{ adds.title }}</h5>
         <div class="tilteInput" v-show="isChange" v-else>
@@ -40,7 +40,7 @@
 
         <button
           type="button"
-          class="btn btn-dark btn-md btn-block"
+          class="btn btn-dark align-self-end btn-md btn-block"
           @click="changeAds"
         >
           {{ toChange }}
@@ -61,7 +61,7 @@
           >удалить</Button
         >
       </li>
-    </div>
+    </ul>
     <span class="centered" v-else>объявлений пока нет.</span>
   </div>
 </template>
@@ -138,67 +138,49 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
 }
 
 .card {
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid lightgray;
   border-radius: 5px;
-  width: 40%;
+  padding: 10px;
+  margin: 10px;
+  width: 80%;
+  max-width: 600px;
 }
 
 .title {
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 10px;
 }
 
-.image img {
-  width: 170px;
-  height: 210px;
-  margin: 5px;
+.image {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  margin-right: 10px;
+}
+
+.description {
+  margin-top: 10px;
+}
+
+.form-control {
+  width: 100%;
 }
 
 .btn {
   margin-top: 10px;
 }
+
 .centered {
-  width: 100%;
-  position: fixed;
-  top: 50%;
-  left: 45%;
-}
-
-.btn-dark {
-  background-color: #343a40;
-  color: white;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-}
-
-.btn-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.form-select {
-  margin: 10px 0;
-  width: 100%;
-}
-
-.sub {
-  margin-top: 10px;
-}
-
-.tilteInput {
-  margin: 10px 0;
-}
-
-.description {
-  margin: 10px 0;
+  text-align: center;
 }
 </style>
