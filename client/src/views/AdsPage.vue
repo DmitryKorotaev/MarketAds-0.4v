@@ -33,7 +33,7 @@ export default {
       const adsId = this.$route.params.id;
       console.log(adsId, "adsId adsPage mounted");
       // we expect ads using then, otherwise it returns undefined
-      this.$store.dispatch("ads/getAds", adsId).then((ads) => {
+      this.$store.dispatch("ads/getAds", { adsId: adsId }).then((ads) => {
         this.currentAds = ads[0];
         (this.image = this.currentAds.image[0]),
           (this.title = this.currentAds.title),

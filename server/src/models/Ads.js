@@ -37,7 +37,9 @@ class Ads {
       // }
       for (let i = 0; i < adds.length; i++) {
         try {
-          adds[i].image = JSON.parse(adds[i].image);
+          if (typeof adds[i].image === "string") {
+            adds[i].image = JSON.parse(adds[i].image);
+          }
         } catch (error) {
           console.log("Error parsing JSON in row", i, error);
           adds[i].image = {};
@@ -81,7 +83,9 @@ class Ads {
       // }
       for (let i = 0; i < adds.length; i++) {
         try {
-          adds[i].image = JSON.parse(adds[i].image);
+          if (typeof adds[i].image === "string") {
+            adds[i].image = JSON.parse(adds[i].image);
+          }
         } catch (error) {
           console.log("Error parsing JSON in row", i, error);
           adds[i].image = {};
@@ -115,7 +119,7 @@ class Ads {
         `SELECT id FROM category WHERE category= "${this.options.category}"`
       );
       // const categoryId = category[0].id;
-      const files = JSON.stringify(this.options.filename);
+      const files = JSON.stringify(this.options.image);
       const adds = await db.query(
         `UPDATE ads SET 
           userId ="${this.options.userId}",
@@ -125,8 +129,12 @@ class Ads {
           image= ? WHERE ID = "${this.options.ID}" `,
         [files]
       );
-      //console.log(adds, "adds models update");
-      return adds;
+      const updatedAd = await db.query(
+        `SELECT * FROM ads WHERE ID = "${this.options.ID}"`
+      );
+      console.log(files, "files models update");
+      console.log(updatedAd, "adds models update");
+      return updatedAd;
     } catch (error) {
       return new Array();
     }

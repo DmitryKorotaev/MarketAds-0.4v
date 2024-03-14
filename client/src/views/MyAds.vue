@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div v-if="myAds.length > 0">
-      <li class="card" v-for="(adds, index) in myAds" :key="adds.id">
+      <div class="card1" v-for="(adds, index) in myAds" :key="adds.id">
         <h5 class="title" v-if="isChange === false">{{ adds.title }}</h5>
         <div class="tilteInput" v-show="isChange" v-else>
           <input type="text" v-model="adds.title" />
@@ -23,7 +23,6 @@
         <div class="descInput" v-show="isChange" v-else>
           <textarea
             class="form-control border border-dark-subtle mt-2"
-            rows="5"
             type="text"
             v-model="adds.description"
           />
@@ -37,30 +36,31 @@
             <option :value="{ value: 'laptops' }">Laptops</option>
           </select>
         </div>
+        <div>
+          <button
+            type="button"
+            class="btn btn-dark btn-md btn-block"
+            @click="changeAds"
+          >
+            {{ toChange }}
+          </button>
 
-        <button
-          type="button"
-          class="btn btn-dark btn-md btn-block"
-          @click="changeAds"
-        >
-          {{ toChange }}
-        </button>
+          <button
+            class="btn btn-success sub"
+            @click="onSubmit(index)"
+            v-show="isChange"
+          >
+            применить изменения
+          </button>
 
-        <button
-          class="btn btn-success sub"
-          @click="onSubmit(index)"
-          v-show="isChange"
-        >
-          применить изменения
-        </button>
-
-        <Button
-          class="btn btn-danger"
-          @click="onRemoveAds(index)"
-          v-show="isChange"
-          >удалить</Button
-        >
-      </li>
+          <Button
+            class="btn btn-danger"
+            @click="onRemoveAds(index)"
+            v-show="isChange"
+            >удалить</Button
+          >
+        </div>
+      </div>
     </div>
     <span class="centered" v-else>объявлений пока нет.</span>
   </div>
@@ -72,7 +72,7 @@ export default {
   name: "MyAds",
   data: () => ({
     baseUrl: "http://localhost:4000/uploads/",
-    image: [],
+    image: "",
     title: "",
     selected: "",
     isChange: false,
@@ -134,18 +134,20 @@ export default {
 </script>
 
 <style>
-.container {
+.container1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
-.card {
+.card1 {
   margin: 20px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 40%;
+  width: 500px;
+  height: 500px;
 }
 
 .title {
@@ -161,7 +163,8 @@ export default {
 }
 
 .btn {
-  margin-top: 10px;
+  margin-top: auto;
+  margin-bottom: 10px;
 }
 .centered {
   width: 100%;
@@ -171,8 +174,10 @@ export default {
 }
 
 .btn-dark {
+  display: flex;
   background-color: #343a40;
   color: white;
+  bottom: 0;
 }
 
 .btn-danger {
@@ -188,17 +193,5 @@ export default {
 .form-select {
   margin: 10px 0;
   width: 100%;
-}
-
-.sub {
-  margin-top: 10px;
-}
-
-.tilteInput {
-  margin: 10px 0;
-}
-
-.description {
-  margin: 10px 0;
 }
 </style>

@@ -27,7 +27,7 @@
         </button>
       </div>
 
-      <li class="list-group" v-for="(ads, idx) in adds" :key="idx">
+      <li class="row" v-for="(ads, idx) in adds" :key="idx">
         <ads :ads="ads" />
       </li>
     </div>

@@ -1,23 +1,46 @@
-<template>
-  <div class="card">
-    <div class="row"></div>
-    <div
-      class="bg-image hover-overlay ripple"
-      v-if="baseUrl.length > 0 && image"
-    >
-      <img :src="baseUrl + image" alt="image" class="img-thumbnail" />
-      <a href="#!">
-        <div
-          class="mask"
-          style="background-color: rgba(251, 251, 251, 0.15)"
-        ></div>
-      </a>
+<!-- <template>
+  <div class="container">
+    <div class="card">
+      <div
+        class="bg-image hover-overlay ripple"
+        v-if="baseUrl.length > 0 && image"
+      >
+        <img :src="baseUrl + image" alt="image" class="img-thumbnail" />
+        <a href="#!">
+          <div
+            class="mask"
+            style="background-color: rgba(251, 251, 251, 0.15)"
+          ></div>
+        </a>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ title }}</h5>
+        <router-link :to="{ name: 'id', params: { id } }"
+          ><h5 class="btn btn-dark btn-md btn-block mt-1">About</h5>
+        </router-link>
+      </div>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">{{ title }}</h5>
-      <router-link :to="{ name: 'id', params: { id } }"
-        ><h5 class="btn btn-dark btn-md btn-block mt-1">About</h5>
-      </router-link>
+  </div>
+</template> -->
+<template>
+  <div class="row">
+    <div class="col-sm-6">
+      <div
+        class="card mb-4"
+        style="width: 18rem"
+        v-if="baseUrl.length > 0 && image"
+      >
+        <img :src="baseUrl + image" alt="image" class="card-img-top" />
+        <div class="card-body">
+          <h5 class="card-title">{{ title }}</h5>
+          <p class="card-text text-truncate">
+            {{ description }}
+          </p>
+          <router-link :to="{ name: 'id', params: { id } }"
+            ><h5 class="btn btn-dark btn-md btn-block mt-1">About</h5>
+          </router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,10 +75,4 @@ export default {
   },
 };
 </script>
-<style>
-.card {
-  margin-top: 35px;
-  width: 250px;
-  height: 430px;
-}
-</style>
+<style></style>

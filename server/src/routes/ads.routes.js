@@ -125,6 +125,7 @@ router.post("/myAds/update", async (req, res) => {
     const options = new Object(req.body);
     const ads = new Ads(options);
     const update = await ads.updateAds();
+    console.log(update, "update router ");
     if (update === undefined) {
       return res
         .status(BAD_REQUEST)
