@@ -31,7 +31,7 @@ class Ads {
   async all() {
     try {
       const adds = await db.query(`SELECT * FROM ads`);
-      console.log(adds);
+      //console.log(adds);
       // for (let i = 0; i < adds.length; i++) {
       //   adds[i].image = JSON.parse(adds[i].image);
       // }
@@ -45,7 +45,7 @@ class Ads {
           adds[i].image = {};
         }
       }
-      console.log(adds, "adds models все объявления");
+      //console.log(adds, "adds models все объявления");
 
       return adds;
     } catch (error) {
@@ -76,11 +76,7 @@ class Ads {
       const adds = await db.query(
         `SELECT * FROM ads WHERE userId = "${this.options.userId}"`
       );
-      // for (let i = 0; i < adds.length; i++) {
-      //   if (typeof adds[i].image === "string") {
-      //     adds[i].image = JSON.parse(adds[i].image);
-      //   }
-      // }
+
       for (let i = 0; i < adds.length; i++) {
         try {
           if (typeof adds[i].image === "string") {
@@ -145,13 +141,21 @@ class Ads {
         `SELECT id FROM category WHERE category= "${this.options.selector}"`
       );
       const adds = await db.query(
-        `SELECT * FROM ads WHERE category= "${category[0].ID}" AND
+        `SELECT * FROM ads WHERE category= "${category[0].id}" AND
          (title LIKE "%${this.options.input}%" OR 
          description LIKE "%${this.options.input}%")`
       );
       for (let i = 0; i < adds.length; i++) {
-        adds[i].image = JSON.parse(adds[i].image);
+        try {
+          if (typeof adds[i].image === "string") {
+            adds[i].image = JSON.parse(adds[i].image);
+          }
+        } catch (error) {
+          console.log("Error parsing JSON in row", i, error);
+          adds[i].image = {};
+        }
       }
+      console.log(adds, "models searchAds");
       return adds;
     } catch (error) {
       return false;

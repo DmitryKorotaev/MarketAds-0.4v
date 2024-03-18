@@ -70,6 +70,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "MyAds",
   data: () => ({
+    myAds: [],
     baseUrl: "http://localhost:4000/uploads/",
     image: "",
     title: "",
@@ -81,18 +82,29 @@ export default {
     toChange: function () {
       return this.isChange ? "сохранить" : "редактировать";
     },
-    ...mapGetters("ads", ["myAds"]),
+    //...mapGetters("ads", ["myAds"]),
   },
   mounted() {
-    try {
-      const id = localStorage.getItem("id");
-      console.log(id);
-      if (id) {
-        this.$store.dispatch("ads/getMyAds", { id });
+    // try {
+    //   const id = localStorage.getItem("id");
+    //   //console.log(id);
+    //   if (id) {
+    //     this.$store.dispatch("ads/getMyAds", { id });
+    //   }
+    // } catch (error) {
+    //   return error;
+    // }
+    this.$nextTick(async () => {
+      try {
+        const id = localStorage.getItem("id");
+        if (id) {
+          const res = await this.$store.dispatch("ads/getMyAds", { id });
+          this.myAds = res;
+        }
+      } catch (error) {
+        return error;
       }
-    } catch (error) {
-      return error;
-    }
+    });
   },
 
   methods: {
@@ -104,6 +116,7 @@ export default {
       this.selected.value === undefined
         ? (category = "other")
         : (category = this.selected.value);
+
       const adds = new Object({
         title: this.myAds[index].title,
         description: this.myAds[index].description,
@@ -112,10 +125,11 @@ export default {
         image: this.myAds[index].image,
         category: category,
       });
-      console.log(adds, "страница myAds метод Update ");
-      this.$store.dispatch("ads/updateAds", adds).then(() => {
-        this.$store.dispatch("ads/getMyAds", { id: this.userId });
-      });
+      this.$store.dispatch("ads/updateAds", adds);
+      // console.log(adds, "страница myAds метод Update ");
+      // this.$store.dispatch("ads/updateAds", adds).then(() => {
+      //   this.$store.dispatch("ads/getMyAds", { id: this.userId });
+      // });
     },
     onRemoveAds(index) {
       const adds = new Object({

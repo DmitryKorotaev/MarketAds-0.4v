@@ -1,27 +1,3 @@
-<!-- <template>
-  <div class="container">
-    <div class="card">
-      <div
-        class="bg-image hover-overlay ripple"
-        v-if="baseUrl.length > 0 && image"
-      >
-        <img :src="baseUrl + image" alt="image" class="img-thumbnail" />
-        <a href="#!">
-          <div
-            class="mask"
-            style="background-color: rgba(251, 251, 251, 0.15)"
-          ></div>
-        </a>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">{{ title }}</h5>
-        <router-link :to="{ name: 'id', params: { id } }"
-          ><h5 class="btn btn-dark btn-md btn-block mt-1">About</h5>
-        </router-link>
-      </div>
-    </div>
-  </div>
-</template> -->
 <template>
   <div class="row">
     <div class="col-sm-6">
@@ -71,7 +47,7 @@ export default {
     this.id = this.ads.ID || "";
     this.image =
       this.ads.image && this.ads.image.length > 0 ? this.ads.image[0] : "";
-    console.log(this.ads, "adds: Object");
+    //console.log(this.ads, "adds: Object");
   },
 };
 </script>

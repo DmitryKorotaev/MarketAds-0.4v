@@ -41,15 +41,14 @@
             @change="handleFileUpload()"
             multiple
             accept="image/*"
+            class="invisible"
           />
         </div>
 
         <br />
-        <div class="btn-danger" v-for="(file, index) in files" :key="index">
+        <div class="file-list" v-for="(file, index) in files" :key="index">
           {{ file.name }}
-          <button class="btn btn-danger" @click="removeFiles(index)">
-            Remove
-          </button>
+          <button class="delete-btn" @click="removeFiles(index)">del</button>
         </div>
         <div class="large-12 medium-12 small-12 cell">
           <button
@@ -60,7 +59,7 @@
             Add files
           </button>
           &nbsp;
-          <button type="submit" class="btn btn-dark btn-md btn-block">
+          <button type="submit" class="btn btn-dark btn-md float-end">
             Создать
           </button>
         </div>
@@ -119,7 +118,25 @@ export default {
 };
 </script>
 <style>
-.btn.btn-danger {
-  margin-left: 50px;
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.delete-btn:hover {
+  background-color: #bd2130;
+}
+.invisible {
+  display: none;
+}
+.file-list {
+  display: inline-block;
+  width: 350px;
+  overflow: hidden;
 }
 </style>

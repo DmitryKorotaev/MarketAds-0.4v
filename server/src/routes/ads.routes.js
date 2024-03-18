@@ -58,7 +58,7 @@ router.get("/all", async (req, res) => {
   const options = new Object();
   const ads = new Ads(options);
   const adds = await ads.all();
-  console.log(adds, "adds запрос на все объявления");
+  //console.log(adds, "adds запрос на все объявления");
   if (!checkObj(adds) || adds.error) {
     return res.status(OK).json(adds);
   } else {
@@ -72,9 +72,9 @@ router.get("/all/:id", async (req, res) => {
       id: req.params.id,
     };
     const ads = new Ads(options);
-    console.log(ads, "ads, router/all/:id");
+    //console.log(ads, "ads, router/all/:id");
     const current = await ads.currentAds();
-    console.log(current, "current  routes: all/:id");
+    //console.log(current, "current  routes: all/:id");
     if (current.length) {
       return res.status(OK).json(current);
     } else {

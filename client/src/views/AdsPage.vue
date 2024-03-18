@@ -31,7 +31,7 @@ export default {
   mounted() {
     try {
       const adsId = this.$route.params.id;
-      console.log(adsId, "adsId adsPage mounted");
+      //console.log(adsId, "adsId adsPage mounted");
       // we expect ads using then, otherwise it returns undefined
       this.$store.dispatch("ads/getAds", { adsId: adsId }).then((ads) => {
         this.currentAds = ads[0];

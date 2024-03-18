@@ -3,6 +3,7 @@
     <div class="col-md-6" v-if="adds.length > 0">
       <div class="inline" id="con1">
         <select id="inputState" class="form-select" v-model="selection">
+          <option disabled selected value>-- выберите категорию --</option>
           <option :value="{ value: 'other' }" selected>other</option>
           <option :value="{ value: 'auto' }">Автомобили</option>
           <option :value="{ value: 'realEstate' }">Недвижимость</option>
@@ -21,7 +22,7 @@
           class="btn btn-outline-secondary"
           type="button"
           id="button-addon2"
-          @click="searchPost"
+          @click="searchAds"
         >
           найти
         </button>
@@ -63,19 +64,21 @@ export default {
     //     console.log(error);
     //   }
     // },
-    async searchPost() {
+    async searchAds() {
       try {
         let selector = new String();
         this.selection.value === undefined
           ? (selector = "other")
           : (selector = this.selection.value);
+
         const params = new Object({
           selector: selector,
           input: this.searchInput,
         });
-        // const response = await this.$store.dispatch('.......', params)
-        //         this.posts = response
-        //         this.searchInput = ''
+        console.log(params, "all.vue searchAds");
+        this.$store.dispatch("ads/searchInput", params);
+
+        this.searchInput = "";
       } catch (error) {
         return console.log("ошибка поиска объявления"), error;
       }
@@ -109,7 +112,7 @@ export default {
 }
 
 .form-select {
-  width: 150px;
+  width: 250px;
   margin-right: 1em;
 }
 

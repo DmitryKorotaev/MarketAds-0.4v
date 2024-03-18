@@ -23,7 +23,7 @@ export default {
     },
     allAds(state, adds) {
       state.adds = adds;
-      console.log(adds, " store mutations adds");
+      //console.log(adds, " store mutations adds");
     },
     myAds(state, myAds) {
       state.myAds = myAds;
@@ -69,7 +69,7 @@ export default {
         const res = await axios.get("/api/ads/all");
         if (res.data) {
           commit("allAds", res.data);
-          console.log(res.data, " store actions res.data");
+          //console.log(res.data, " store actions res.data");
         } else {
           res.status == 404;
         }
@@ -79,7 +79,7 @@ export default {
     },
     async getAds({ commit }, data) {
       try {
-        console.log(data.adsId);
+        //console.log(data.adsId);
         const res = await axios.get(`/api/ads/all/${data.adsId}`);
         if (res.data) {
           commit("allAds", res.data);
@@ -92,18 +92,18 @@ export default {
       }
     },
 
-    async getMyAds({ commit }, data) {
-      try {
-        const res = await axios.get(`/api/ads/myAds/${data.id}`);
-        if (res.status == 200) {
-          commit("myAds", res.data);
-        } else {
-          res.status == 404;
-        }
-      } catch (error) {
-        error;
-      }
-    },
+    // async getMyAds({ commit }, data) {
+    //   try {
+    //     const res = await axios.get(`/api/ads/myAds/${data.id}`);
+    //     if (res.status == 200) {
+    //       commit("myAds", res.data);
+    //     } else {
+    //       res.status == 404;
+    //     }
+    //   } catch (error) {
+    //     error;
+    //   }
+    // },
 
     async deleteAds({ commit }, data) {
       try {
@@ -119,18 +119,55 @@ export default {
         return error;
       }
     },
-    async updateAds({ commit }, data) {
+    // async updateAds({ commit }, data) {
+    //   try {
+    //     console.log(data, "actions adsUpdate data");
+    //     const res = await axios.post("/api/ads/myAds/update", data);
+    //     if (res.status == 200) {
+    //       console.log(res.data, "store actions updataAds");
+    //       commit("myAds", res.data);
+    //     } else {
+    //       console.log("error update ads" + res.status);
+    //     }
+    //   } catch (error) {
+    //     return error;
+    //   }
+    // },
+
+    async searchInput({ commit }, data) {
       try {
-        console.log(data, "actions adsUpdate data");
-        const res = await axios.post("/api/ads/myAds/update", data);
-        if (res.status == 200) {
-          console.log(res.data, "store actions updataAds");
-          commit("myAds", res.data);
+        console.log(data, "actions searchInput data");
+        const res = await axios.post(`/api/ads/search`, data);
+        if (res.status == 201) {
+          commit("allAds", res.data);
         } else {
-          console.log("error update ads" + res.status);
+          return console.log("Something went wrong :(");
         }
       } catch (error) {
         return error;
+      }
+    },
+    async updateAds(context, data) {
+      try {
+        const res = await axios.post("/api/ads/myAds/update", data);
+        if (res.status == 200) {
+          console.log("ads updated successfully");
+        } else {
+          console.log("Error updating post...");
+        }
+      } catch (error) {
+        return error;
+      }
+    },
+    async getMyAds(context, data) {
+      try {
+        const res = await axios.get(`/api/ads/myAds/${data.id}`);
+        if (res.status == 200) {
+          console.log(res.data, " store actions myAds");
+          return res.data;
+        }
+      } catch (error) {
+        error;
       }
     },
   },
@@ -139,17 +176,6 @@ export default {
     myAds: (state) => state.myAds,
   },
 };
-// async myAds(context, data) {
-//   try {
-//     const res = await axios.get(`/api/ads/myAds/${data.id}`);
-//     if (res.status == 200) {
-//       console.log(res.data, " store actions myAds");
-//       return res.data;
-//     }
-//   } catch (error) {
-//     error;
-//   }
-// },
 // async deleteAds(context, data) {
 //   try {
 //     const res = await axios.post(`/api/ads/myAds/delete`, data);
@@ -159,18 +185,6 @@ export default {
 //       return res.data;
 //     } else {
 //       console.log("error deleting ads" + res.status);
-//     }
-//   } catch (error) {
-//     return error;
-//   }
-// },
-// async updateAds(context, data) {
-//   try {
-//     const res = await axios.post("/api/ads/myAds/update", data);
-//     if (res.status == 200) {
-//       console.log("ads updated successfully");
-//     } else {
-//       console.log("Error updating post...");
 //     }
 //   } catch (error) {
 //     return error;
