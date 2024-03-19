@@ -9,6 +9,7 @@ export default {
       isCreate: false,
       adds: [],
       myAds: [],
+      search: [],
     };
   },
 
@@ -27,6 +28,9 @@ export default {
     },
     myAds(state, myAds) {
       state.myAds = myAds;
+    },
+    searchAds(state, search) {
+      state.search = search;
     },
   },
   actions: {
@@ -139,7 +143,7 @@ export default {
         console.log(data, "actions searchInput data");
         const res = await axios.post(`/api/ads/search`, data);
         if (res.status == 201) {
-          commit("allAds", res.data);
+          commit("searchAds", res.data);
         } else {
           return console.log("Something went wrong :(");
         }
@@ -174,6 +178,7 @@ export default {
   getters: {
     adds: (state) => state.adds,
     myAds: (state) => state.myAds,
+    search: (state) => state.search,
   },
 };
 // async deleteAds(context, data) {

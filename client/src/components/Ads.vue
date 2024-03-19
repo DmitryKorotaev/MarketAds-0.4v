@@ -13,7 +13,7 @@
             {{ description }}
           </p>
           <router-link :to="{ name: 'id', params: { id } }"
-            ><h5 class="btn btn-dark btn-md btn-block mt-1">About</h5>
+            ><h5 class="btn btn-dark btn-md btn-block mt-1">перейти</h5>
           </router-link>
         </div>
       </div>

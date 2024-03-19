@@ -8,7 +8,7 @@
       <label class="categories">Выберете категорию:</label>
       <div id="v-model-select" class="dropdown">
         <select id="inputState" class="form-selectet" v-model="selected">
-          <option :value="{ value: 'other' }" selected>other</option>
+          <option :value="{ value: 'other' }" selected>Другое</option>
           <option :value="{ value: 'auto' }">Автомобили</option>
           <option :value="{ value: 'realEstate' }">Недвижимость</option>
           <option :value="{ value: 'electronics' }">Электроника</option>

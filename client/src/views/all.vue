@@ -4,7 +4,7 @@
       <div class="inline" id="con1">
         <select id="inputState" class="form-select" v-model="selection">
           <option disabled selected value>-- выберите категорию --</option>
-          <option :value="{ value: 'other' }" selected>other</option>
+          <option :value="{ value: 'other' }" selected>Другое</option>
           <option :value="{ value: 'auto' }">Автомобили</option>
           <option :value="{ value: 'realEstate' }">Недвижимость</option>
           <option :value="{ value: 'electronics' }">Электроника</option>
@@ -28,8 +28,8 @@
         </button>
       </div>
 
-      <li class="row" v-for="(ads, idx) in adds" :key="idx">
-        <ads :ads="ads" />
+      <li class="row" v-for="(ad, idx) in displayedAds" :key="idx">
+        <ads :ads="ad" />
       </li>
     </div>
     <span class="centered" v-else>объявлений пока нет.</span>
@@ -53,17 +53,20 @@ export default {
   },
   computed: {
     ...mapGetters("ads", ["adds"]),
+    ...mapGetters("ads", ["search"]),
+    displayedAds() {
+      return this.searchInput.trim() !== "" ? this.search : this.adds;
+    },
   },
 
   methods: {
-    // async fetchData() {
-    //   try {
-    //     const res = await this.$axios.get("/api/post/all");
-    //     this.adds = res.data;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
+    async handleSearch() {
+      if (this.searchInput.trim() !== "") {
+        this.searchAds();
+      } else {
+        this.$store.dispatch("ads/getAllAds");
+      }
+    },
     async searchAds() {
       try {
         let selector = new String();
@@ -71,14 +74,15 @@ export default {
           ? (selector = "other")
           : (selector = this.selection.value);
 
+        //console.log(selector, "this.selection");
+
         const params = new Object({
           selector: selector,
           input: this.searchInput,
         });
-        console.log(params, "all.vue searchAds");
-        this.$store.dispatch("ads/searchInput", params);
+        //console.log(params, "all.vue searchAds");
 
-        this.searchInput = "";
+        await this.$store.dispatch("ads/searchInput", params);
       } catch (error) {
         return console.log("ошибка поиска объявления"), error;
       }
