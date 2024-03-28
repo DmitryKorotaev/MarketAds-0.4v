@@ -137,26 +137,72 @@ class Ads {
   }
   async searchAds() {
     try {
+      // category and input
       const category = await db.query(
         `SELECT id FROM category WHERE category= "${this.options.selector}"`
       );
-      const adds = await db.query(
-        `SELECT * FROM ads WHERE category= "${category[0].id}" AND
-         (title LIKE "%${this.options.input}%" OR 
-         description LIKE "%${this.options.input}%")`
-      );
-      for (let i = 0; i < adds.length; i++) {
-        try {
-          if (typeof adds[i].image === "string") {
-            adds[i].image = JSON.parse(adds[i].image);
+      if (
+        this.options.input !== "" &&
+        this.options.selector !== "all" &&
+        this.options.selector !== ""
+      ) {
+        const adds = await db.query(
+          `SELECT * FROM ads WHERE category= "${category[0].id}" AND
+           (title LIKE "%${this.options.input}%" OR 
+           description LIKE "%${this.options.input}%")`
+        );
+        for (let i = 0; i < adds.length; i++) {
+          try {
+            if (typeof adds[i].image === "string") {
+              adds[i].image = JSON.parse(adds[i].image);
+            }
+          } catch (error) {
+            console.log("Error parsing JSON in row", i, error);
+            adds[i].image = {};
           }
-        } catch (error) {
-          console.log("Error parsing JSON in row", i, error);
-          adds[i].image = {};
         }
+        // console.log(adds, "models searchAds adds");
+        return adds;
       }
-      console.log(adds, "models searchAds");
-      return adds;
+
+      // categories
+      if (this.options.input === "" && this.options.selector !== "all") {
+        const select = await db.query(
+          `SELECT * FROM ads WHERE category= "${category[0].id}"`
+        );
+        for (let i = 0; i < select.length; i++) {
+          try {
+            if (typeof select[i].image === "string") {
+              select[i].image = JSON.parse(select[i].image);
+            }
+          } catch (error) {
+            console.log("Error parsing JSON in row", i, error);
+            select[i].image = {};
+          }
+        }
+        // console.log(select, "models searchAds select");
+        return select;
+      }
+      //all caregory
+
+      if (this.options.selector === "all") {
+        const all = await db.query(`SELECT * FROM ads WHERE
+           (title LIKE "%${this.options.input}%" OR 
+           description LIKE "%${this.options.input}%")`);
+        // console.log(all, "models searchAds all");
+
+        for (let i = 0; i < all.length; i++) {
+          try {
+            if (typeof all[i].image === "string") {
+              all[i].image = JSON.parse(all[i].image);
+            }
+          } catch (error) {
+            console.log("Error parsing JSON in row", i, error);
+            all[i].image = {};
+          }
+        }
+        return all;
+      }
     } catch (error) {
       return false;
     }

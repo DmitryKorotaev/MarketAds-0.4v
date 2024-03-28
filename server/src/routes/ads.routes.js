@@ -174,9 +174,11 @@ router.post("/search", async (req, res) => {
     if (!req.body) {
       return res.status(BAD_REQUEST).json({ message: "enter the data" });
     }
+    // console.log(req.body, "req.body routes search");
     const options = new Object(req.body);
     const ads = new Ads(options);
     const search = await ads.searchAds();
+
     return res.status(CREATED).json(search);
   } catch {
     return res.status(BAD_REQUEST).json({ message: error.message });

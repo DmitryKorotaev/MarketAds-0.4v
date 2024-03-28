@@ -1,31 +1,33 @@
 <template>
   <div class="container-fluid">
     <div class="col-md-6" v-if="adds.length > 0">
-      <div class="inline" id="con1">
+      <div class="inline">
         <select id="inputState" class="form-select" v-model="selection">
-          <option disabled selected value>-- выберите категорию --</option>
-          <option :value="{ value: 'other' }" selected>Другое</option>
-          <option :value="{ value: 'auto' }">Автомобили</option>
-          <option :value="{ value: 'realEstate' }">Недвижимость</option>
-          <option :value="{ value: 'electronics' }">Электроника</option>
+          <option disabled selected value>Выберите категорию</option>
+          <!-- вместо объектов берем стороки для отклика на изменение при поиске -->
+          <option value="all">Показать все</option>
+          <option value="other" selected>Другое</option>
+          <option value="auto">Автомобили</option>
+          <option value="realEstate">Недвижимость</option>
+          <option value="electronics">Электроника</option>
         </select>
       </div>
       <div class="input-group justify-content-center;">
         <input
-          type="text"
+          type="search"
           class="form-control"
           v-model="searchInput"
           aria-describedby="button-addon2"
         />
 
-        <button
+        <!-- <button
           class="btn btn-outline-secondary"
           type="button"
           id="button-addon2"
           @click="searchAds"
         >
           найти
-        </button>
+        </button> -->
       </div>
 
       <li class="row" v-for="(ad, idx) in displayedAds" :key="idx">
@@ -55,38 +57,79 @@ export default {
     ...mapGetters("ads", ["adds"]),
     ...mapGetters("ads", ["search"]),
     displayedAds() {
-      return this.searchInput.trim() !== "" ? this.search : this.adds;
+      if (
+        (this.searchInput.trim() && this.searchInput !== "") ||
+        (this.selection && this.selection !== "")
+      ) {
+        return this.search;
+      } else {
+        return this.adds;
+      }
     },
   },
-
-  methods: {
-    async handleSearch() {
-      if (this.searchInput.trim() !== "") {
+  watch: {
+    searchInput: function (newInput) {
+      if (newInput.trim() && newInput !== "") {
+        this.searchAds();
+      } else if (this.selection && this.selection !== "") {
         this.searchAds();
       } else {
         this.$store.dispatch("ads/getAllAds");
       }
     },
+    selection: function (newSelection) {
+      if (
+        (newSelection && newSelection !== "") ||
+        (this.newInput.trim() && this.newInput !== "")
+      ) {
+        // console.log(newSelection, "selection watch");
+        this.searchAds();
+      } else {
+        this.$store.dispatch("ads/getAllAds");
+      }
+    },
+  },
+
+  methods: {
     async searchAds() {
       try {
-        let selector = new String();
-        this.selection.value === undefined
-          ? (selector = "other")
-          : (selector = this.selection.value);
-
+        const selector = this.selection || "all";
         //console.log(selector, "this.selection");
-
         const params = new Object({
           selector: selector,
           input: this.searchInput,
         });
-        //console.log(params, "all.vue searchAds");
-
+        // console.log(params, "all.vue searchAds");
         await this.$store.dispatch("ads/searchInput", params);
       } catch (error) {
         return console.log("ошибка поиска объявления"), error;
       }
     },
+    // -----------BTN INPUN------------------------------
+    //  async handleSearch() {
+    //   if (this.searchInput.trim() !== "") {
+    //     this.searchAds();
+    //   } else {
+    //     this.$store.dispatch("ads/getAllAds");
+    //   }
+    // },
+    // async searchAds() {
+    //   try {
+    //     let selector = new String();
+    //     this.selection.value === undefined
+    //       ? (selector = "other")
+    //       : (selector = this.selection.value);
+    // const params = new Object({
+    //       selector: selector,
+    //       input: this.searchInput,
+    //     });
+    //     //console.log(params, "all.vue searchAds");
+
+    //     await this.$store.dispatch("ads/searchInput", params);
+    //   } catch (error) {
+    //     return console.log("ошибка поиска объявления"), error;
+    //   }
+    // },
   },
 };
 </script>

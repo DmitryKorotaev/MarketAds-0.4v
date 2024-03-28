@@ -26,29 +26,51 @@ export default {
   props: {
     ads: Object,
   },
-
-  data() {
-    return {
-      title: "",
-      description: "",
-      id: "",
-      image: "",
-      baseUrl: "http://localhost:4000/uploads/",
-      index: 0,
-    };
-  },
+  // ----------------does not change dynamically------------------
+  // data() {
+  //   return {
+  //     title: "",
+  //     description: "",
+  //     id: "",
+  //     image: "",
+  //     baseUrl: "http://localhost:4000/uploads/",
+  //     index: 0,
+  //   };
+  // },
   //Property or method "image" is not defined on the instance but referenced during render. Make sure that this property is reactive, either in the data option, or for class-based components, by initializing the property.
   //ads.js:25 TypeError: Cannot read properties of null (reading '0')
   //[Vue warn]: Error in mounted hook: "TypeError: Cannot read properties of null (reading '0')"
   //решение ошибок :
-  mounted() {
-    this.title = this.ads.title || "";
-    this.description = this.ads.description || "";
-    this.id = this.ads.ID || "";
-    this.image =
-      this.ads.image && this.ads.image.length > 0 ? this.ads.image[0] : "";
-    //console.log(this.ads, "adds: Object");
+  // mounted() {
+  //   this.title = this.ads.title || "";
+  //   this.description = this.ads.description || "";
+  //   this.id = this.ads.ID || "";
+  //   this.image =
+  //     this.ads.image && this.ads.image.length > 0 ? this.ads.image[0] : "";
+  //   console.log(this.ads, "adds: Object");
+  // },
+  computed: {
+    // проверка this.ads на undefined and null
+    // для предотвращения Cannot read property
+    title() {
+      return this.ads && this.ads.title ? this.ads.title : "";
+    },
+    description() {
+      return this.ads && this.ads.description ? this.ads.description : "";
+    },
+    id() {
+      return this.ads && this.ads.ID ? this.ads.ID : "";
+    },
+    image() {
+      return this.ads && this.ads.image ? this.ads.image : "";
+    },
+    fullImageUrl() {
+      return this.baseUrl + this.image;
+    },
   },
+  data: () => ({
+    baseUrl: "http://localhost:4000/uploads/",
+  }),
 };
 </script>
 <style></style>

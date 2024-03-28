@@ -8,9 +8,9 @@ const connection = mysql.createConnection({
   password: config.get("password"),
 });
 
-connection.connect(function (err) {
-  if (err) {
-    return console.error("Ошибка: " + err.message);
+connection.connect(function (error) {
+  if (error) {
+    return console.error(`Ошибка: ${error.message}`);
   } else {
     console.log("Подключение к серверу MySQL успешно установлено");
   }
@@ -18,7 +18,7 @@ connection.connect(function (err) {
 
 module.exports.query = (sql, params) => {
   return new Promise((resolve) => {
-    connection.query(sql, params, (err, results) => {
+    connection.query(sql, params, (error, results) => {
       resolve(results);
     });
   });
